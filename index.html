@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>פייתונית – פייתון בעברית</title>
+<style>
+@font-face{font-family:HebProp;src:local("Segoe UI"),local("Arial"),local("Noto Sans Hebrew"),local("Arial Hebrew");unicode-range:U+0590-05FF,U+FB1D-FB4F}
+:root{
+  --font:"Segoe UI Variable Text","Segoe UI","Heebo","Noto Sans Hebrew","Arial Hebrew",system-ui,-apple-system,Arial,sans-serif;
+  --mono:HebProp,"Cascadia Code","JetBrains Mono","Fira Code",Consolas,"SF Mono",Menlo,"DejaVu Sans Mono","Courier New",monospace;
+  --fs:15px;--lh:24px;--pad:14px;
+  --bg:#f3f5fa;--surface:#ffffff;--surface2:#f6f8fc;--surface3:#eceff6;--border:#dde2ec;--border2:#c9d0de;
+  --text:#192033;--muted:#5f6b82;--faint:#8a94a8;
+  --accent:#3b6df0;--accent-h:#2f5bd0;--accent-soft:#e7eefe;--on-accent:#fff;
+  --ok:#15803d;--ok-soft:#e1f6e8;--err:#d92d3a;--err-soft:#fdeaec;--warn:#b45309;--warn-soft:#fff3dc;
+  --k:#9333ea;--b:#0a7f9b;--s:#2e8b3d;--c:#8590a6;--n:#c2540a;--cn:#c2540a;--fn:#2563eb;--sf:#a35a8a;
+  --line:color-mix(in srgb,var(--accent) 9%,transparent);--line-strong:color-mix(in srgb,var(--accent) 16%,transparent);
+  --shadow:0 1px 2px rgba(20,30,60,.06),0 6px 18px rgba(20,30,60,.07);--shadow-lg:0 12px 40px rgba(15,25,55,.22);
+  --r:12px;--r-sm:8px;color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#0c1017;--surface:#141a24;--surface2:#10151e;--surface3:#1b2331;--border:#252f40;--border2:#33405a;
+  --text:#e6eaf2;--muted:#9aa5ba;--faint:#6c778d;--accent:#7ba3ff;--accent-h:#9bb9ff;--accent-soft:#1b2a4a;--on-accent:#0b1226;
+  --ok:#5fd38a;--ok-soft:#14301f;--err:#ff7a85;--err-soft:#3a1a1f;--warn:#f3b562;--warn-soft:#3a2b12;
+  --k:#d6a2ff;--b:#62d3e8;--s:#9ad67a;--c:#6e7a91;--n:#f5a65e;--cn:#f5a65e;--fn:#8db4ff;--sf:#e0a3cc;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);--shadow-lg:0 16px 50px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme=dark]{
+  --bg:#0c1017;--surface:#141a24;--surface2:#10151e;--surface3:#1b2331;--border:#252f40;--border2:#33405a;
+  --text:#e6eaf2;--muted:#9aa5ba;--faint:#6c778d;--accent:#7ba3ff;--accent-h:#9bb9ff;--accent-soft:#1b2a4a;--on-accent:#0b1226;
+  --ok:#5fd38a;--ok-soft:#14301f;--err:#ff7a85;--err-soft:#3a1a1f;--warn:#f3b562;--warn-soft:#3a2b12;
+  --k:#d6a2ff;--b:#62d3e8;--s:#9ad67a;--c:#6e7a91;--n:#f5a65e;--cn:#f5a65e;--fn:#8db4ff;--sf:#e0a3cc;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);--shadow-lg:0 16px 50px rgba(0,0,0,.6);color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+button,select,input,textarea{font:inherit;color:inherit}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+svg.i.fill{fill:currentColor;stroke:none}
+.app{height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+[hidden]{display:none!important}
+kbd{font:600 11px var(--mono);background:color-mix(in srgb,currentColor 14%,transparent);border-radius:5px;padding:1px 6px;direction:ltr;display:inline-block}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:36px;padding:0 13px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s,box-shadow .15s,transform .05s}
+.btn:hover{border-color:var(--border2);background:var(--surface3)}
+.btn:active{transform:translateY(1px)}
+.btn.icon{width:36px;padding:0}
+.btn.sm{height:30px;padding:0 10px;font-size:13px;gap:6px}
+.btn.sm.icon{width:30px;padding:0}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.ghost:hover{background:var(--surface3);color:var(--text)}
+.btn.toggle.on{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600;padding:0 16px;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 38%,transparent)}
+.btn.primary:hover{background:var(--accent-h);border-color:var(--accent-h)}
+.btn.primary kbd{background:rgba(255,255,255,.22);color:inherit}
+.btn.danger{background:var(--err);border-color:var(--err);color:#fff;font-weight:600}
+.btn.danger:hover{filter:brightness(1.08);background:var(--err)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+select.btn{padding-inline:10px 12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 10px center;padding-left:28px}
+
+/* ---------- app bar ---------- */
+.appbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;margin-inline-end:8px}
+.brand .mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font:800 15px var(--mono);color:#fff;letter-spacing:-.5px;background:linear-gradient(135deg,#3b6df0 0%,#5b8cff 55%,#f7c948 140%);box-shadow:0 3px 10px color-mix(in srgb,#3b6df0 40%,transparent);direction:ltr}
+.brand b{display:block;font-size:17px;line-height:1.15}
+.brand small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.seg{display:inline-flex;background:var(--surface3);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:8px;height:30px;padding:0 14px;cursor:pointer;color:var(--muted);font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.seg button:hover{color:var(--text)}
+.seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(20,30,60,.15)}
+.seg.sm button{height:28px;padding:0 11px;font-size:13px}
+.grow{flex:1}
+.conn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.dot.ok{background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}.dot.bad{background:var(--err);box-shadow:0 0 0 3px var(--err-soft)}
+
+/* ---------- workspace ---------- */
+main{flex:1;min-height:0;display:flex;flex-direction:column}
+.workspace{flex:1;min-height:0;display:flex;flex-direction:column;padding:12px 16px 0}
+.panes{flex:1 1 0;min-height:170px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pane{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.pane:focus-within{border-color:color-mix(in srgb,var(--accent) 55%,var(--border));box-shadow:var(--shadow),0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
+.ph{display:flex;align-items:center;gap:8px;padding:7px 10px 7px 12px;border-bottom:1px solid var(--border);background:var(--surface2);min-height:44px}
+.ph .lang{display:inline-flex;align-items:center;gap:8px;font-weight:650;font-size:14px}
+.ph .tag{font:700 11px var(--mono);padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);direction:ltr}
+.ph .tag.py{background:color-mix(in srgb,#f7c948 28%,transparent);color:var(--warn)}
+.ph .sp{flex:1}
+.ed{position:relative;flex:1;min-height:0;display:flex;background:var(--surface)}
+.gut{flex:none;min-width:48px;overflow:hidden;background:var(--surface2);color:var(--faint);font:calc(var(--fs) - 2px)/var(--lh) var(--mono);text-align:center;white-space:pre;user-select:none;direction:ltr;border-inline-end:1px solid var(--border)}
+.gin{padding:var(--pad) 8px;will-change:transform}
+.nonums .gut{display:none}
+.wrap{position:relative;flex:1;min-width:0;overflow:hidden}
+.hl,.ta,.ce{position:absolute;inset:0;margin:0;padding:var(--pad) var(--pad) 60px var(--pad);font:var(--fs)/var(--lh) var(--mono);white-space:pre;tab-size:4;border:0;font-variant-ligatures:none;letter-spacing:0;word-spacing:0;text-align:start}
+.hlw{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hl{position:absolute;top:0;left:0;right:auto;bottom:auto;margin:0;pointer-events:none;color:var(--text);padding-right:60px;min-width:100%;will-change:transform}
+.mirror{visibility:hidden}
+.ta{overflow:auto;background:transparent;color:transparent;caret-color:var(--text);resize:none;outline:none;z-index:2;padding-right:60px}
+.ta::selection{background:color-mix(in srgb,var(--accent) 30%,transparent);color:transparent}
+.ce{overflow:auto;outline:none;color:var(--text);caret-color:var(--text);z-index:2}
+.ce i{unicode-bidi:isolate;font-style:normal}
+.ce::selection,.ce *::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.hl i,.ce i{font-style:normal}
+.k{color:var(--k);font-weight:600}.b{color:var(--b)}.s{color:var(--s)}.c{color:var(--c);font-style:italic!important}.n{color:var(--n)}.cn{color:var(--cn);font-weight:600}.fn{color:var(--fn);font-weight:600}.sf{color:var(--sf);font-style:italic!important}
+.mk{position:absolute;inset-inline:0;height:var(--lh);pointer-events:none;z-index:1;display:none}
+.mk.cur{background:var(--line)}
+.mk.cur.strong{background:var(--line-strong)}
+.mk.errl{background:color-mix(in srgb,var(--err) 16%,transparent);box-shadow:inset 3px 0 0 var(--err)}
+.nolinehl .mk.cur{display:none!important}
+.hint{padding:8px 12px;font-size:12px;color:var(--faint)}
+
+/* ---------- splitter + output dock ---------- */
+.splitter{flex:none;height:14px;cursor:row-resize;display:flex;align-items:center;justify-content:center;touch-action:none;outline-offset:-2px}
+.splitter::after{content:"";width:46px;height:4px;border-radius:4px;background:var(--border2);transition:background .15s,width .15s}
+.splitter:hover::after,.splitter.drag::after,.splitter:focus-visible::after{background:var(--accent);width:64px}
+.dock{flex:0 0 var(--oh,260px);min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-bottom:0;border-radius:var(--r) var(--r) 0 0;box-shadow:var(--shadow);overflow:hidden}
+.dock.collapsed{flex-basis:auto}
+.dock.collapsed .dbody,.dock.collapsed .dfoot{display:none}
+.dock.animate{transition:flex-basis .2s ease}
+.dh{display:flex;align-items:center;gap:8px;padding:7px 10px 7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);min-height:44px}
+.dock.collapsed .dh{border-bottom:0}
+.dh .ttl{display:inline-flex;align-items:center;gap:8px;font-weight:650}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--surface3);color:var(--muted)}
+.chip.run{background:var(--accent-soft);color:var(--accent)}.chip.ok{background:var(--ok-soft);color:var(--ok)}.chip.bad{background:var(--err-soft);color:var(--err)}
+.chip.run .dot{background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.dbody{flex:1;min-height:0;overflow:auto;padding:12px 16px;font:calc(var(--fs) - 1px)/1.65 var(--mono);scroll-behavior:auto}
+#out{min-height:100%}
+#out>div{white-space:pre-wrap;word-break:break-word;min-height:1.65em;unicode-bidi:plaintext}
+#out .e{color:var(--err)}
+#out .echo{color:var(--accent);font-weight:600}
+.inline-in{font:inherit;color:var(--accent);font-weight:600;background:color-mix(in srgb,var(--accent) 9%,transparent);border:0;border-bottom:2px solid var(--accent);border-radius:4px 4px 0 0;padding:0 6px;margin-inline-start:4px;min-width:14ch;outline:none;caret-color:var(--accent)}
+.inline-in::placeholder{color:var(--faint);font-weight:400}
+.empty{height:100%;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--faint);text-align:center;font:14px var(--font)}
+.empty svg{width:30px;height:30px;opacity:.6}.empty b{color:var(--muted)}
+.dfoot{display:flex;align-items:center;gap:8px;padding:6px 12px;border-top:1px solid var(--border);background:var(--surface2);font-size:12.5px;color:var(--muted)}
+.figure{margin:8px 0;display:inline-block;max-width:100%;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.figure img{display:block;max-width:100%;height:auto;max-height:min(70vh,640px)}
+.figure .cap{display:flex;justify-content:space-between;gap:10px;font:12px var(--font);padding:5px 10px;background:var(--surface2);color:var(--muted);border-top:1px solid var(--border)}
+.figure .cap a{color:var(--accent);text-decoration:none;cursor:pointer}
+.webnote{margin:10px 0;padding:12px 14px;border-radius:10px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 9%,transparent);font:14px/1.7 var(--font);color:var(--text);white-space:normal!important}
+.webnote strong{display:flex;align-items:center;gap:8px;font-size:14.5px;margin-bottom:3px}
+.webnote code{direction:ltr;unicode-bidi:isolate;background:color-mix(in srgb,var(--text) 9%,transparent);padding:1px 6px;border-radius:5px;font:12.5px var(--mono)}
+.webnote .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.webnote a.btn{text-decoration:none;display:inline-flex;align-items:center;min-height:32px}
+.diag{margin:10px 0;padding:12px 14px;border-radius:10px;border:1px solid color-mix(in srgb,var(--err) 35%,transparent);background:var(--err-soft);font:14px/1.6 var(--font);color:var(--text);white-space:normal!important}
+.diag strong{display:flex;align-items:center;gap:8px;color:var(--err);font-size:14.5px;margin-bottom:3px}
+.diag code{direction:ltr;unicode-bidi:isolate;background:color-mix(in srgb,var(--text) 9%,transparent);padding:1px 6px;border-radius:5px;font:12.5px var(--mono)}
+.diag .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.libs{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px;font:12.5px var(--font);color:var(--muted)}
+.badge{font:600 11.5px var(--font);border-radius:999px;padding:2px 9px;background:var(--surface3);color:var(--muted)}
+.badge.ok{color:var(--ok);background:var(--ok-soft)}.badge.no{color:var(--err);background:var(--err-soft)}
+
+/* ---------- status bar ---------- */
+.status{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:5px 16px;background:var(--surface);border-top:1px solid var(--border);font-size:12.5px;color:var(--muted)}
+.status .sep{width:1px;height:14px;background:var(--border)}
+
+/* ---------- dictionary ---------- */
+#dict{flex:1;min-height:0;overflow:auto;padding:18px 16px 28px}
+.dwrap{max-width:1100px;margin:0 auto}
+.dtools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.search{position:relative;flex:1;min-width:220px;max-width:460px}
+.search input{width:100%;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--surface);padding:0 40px 0 12px;outline:none}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.search svg{position:absolute;right:12px;top:11px;color:var(--faint)}
+#dict h3{margin:22px 0 10px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+#dict h3 small{color:var(--faint);font-weight:500}
+.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px;cursor:pointer;text-align:start;transition:border-color .12s,transform .12s,box-shadow .12s}
+.ch:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:var(--shadow)}
+.ch span{font-weight:600}
+.ch code{font:13px var(--mono);direction:ltr;color:var(--muted)}
+
+/* ---------- popups ---------- */
+#ac{position:fixed;z-index:60;min-width:230px;max-width:min(380px,calc(100vw - 16px));background:var(--surface);border:1px solid var(--border2);border-radius:12px;box-shadow:var(--shadow-lg);padding:5px;overflow:hidden;animation:pop .1s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(-3px)}}
+.aci{display:flex;align-items:center;gap:10px;padding:6px 9px;border-radius:8px;cursor:pointer}
+.aci .w{font:calc(var(--fs) - 1px) var(--mono);font-weight:600;white-space:nowrap}
+.aci .w mark{background:none;color:var(--accent);font-weight:800}
+.aci .t{font:12.5px var(--mono);color:var(--muted);white-space:nowrap;margin-inline-start:auto;direction:ltr;unicode-bidi:isolate}
+.aci .t[dir=rtl]{direction:rtl}
+.aci .kd{font:600 10.5px var(--font);padding:1px 7px;border-radius:999px;background:var(--surface3);color:var(--muted);white-space:nowrap;min-width:44px;text-align:center}
+.aci .kd.k{color:var(--k);background:color-mix(in srgb,var(--k) 14%,transparent);font-weight:600}
+.aci .kd.b{color:var(--b);background:color-mix(in srgb,var(--b) 14%,transparent)}
+.aci .kd.v{color:var(--warn);background:var(--warn-soft)}
+.aci .kd.m{color:var(--fn);background:color-mix(in srgb,var(--fn) 14%,transparent)}
+.aci .u{font:600 10.5px var(--font);color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:1px 7px;white-space:nowrap}
+.aci.sel{background:var(--accent-soft)}
+.aci.sel .t{color:var(--text)}
+.acf{display:flex;gap:10px;justify-content:center;padding:5px 8px 3px;margin-top:3px;border-top:1px solid var(--border);font-size:11px;color:var(--faint)}
+#toast{position:fixed;bottom:calc(46px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,12px);background:var(--text);color:var(--bg);padding:8px 18px;border-radius:999px;opacity:0;transition:.22s;pointer-events:none;z-index:90;font-weight:500;box-shadow:var(--shadow-lg)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- dialogs ---------- */
+dialog{border:1px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);padding:0;box-shadow:var(--shadow-lg);width:min(560px,calc(100vw - 24px));max-height:min(86vh,760px)}
+dialog::backdrop{background:rgba(8,12,22,.5);backdrop-filter:blur(2px)}
+dialog[open]{display:flex;flex-direction:column;animation:pop .15s ease-out}
+.dlg-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.dlg-h h2{margin:0;font-size:17px;flex:1}
+.dlg-b{overflow:auto;padding:6px 18px 18px}
+.grp{margin-top:16px}
+.grp>h4{margin:0 0 4px;font-size:12px;letter-spacing:.02em;color:var(--faint);font-weight:700}
+.row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--border)}
+.grp .row:last-child{border-bottom:0}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-weight:600}
+.row .tx small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4;margin-top:1px}
+.sw{position:relative;width:42px;height:24px;flex:none;display:inline-block}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.sw span{position:absolute;inset:0;background:var(--border2);border-radius:999px;transition:.18s}
+.sw span::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.18s}
+.sw input:checked+span{background:var(--accent)}
+.sw input:checked+span::after{inset-inline-start:21px}
+.sw input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+input[type=range]{accent-color:var(--accent);width:150px}
+.val{font:600 12px var(--mono);color:var(--muted);min-width:34px;text-align:center;direction:ltr}
+.plist{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.pitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);cursor:pointer}
+.pitem:hover{border-color:var(--accent)}
+.pitem b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pitem small{color:var(--faint)}
+.saverow{display:flex;gap:8px;margin-top:14px}
+.saverow input{flex:1;height:38px;border-radius:9px;border:1px solid var(--border);background:var(--surface);padding:0 12px;outline:none}
+.saverow input:focus{border-color:var(--accent)}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13px;margin-top:6px;align-items:center}
+.keys span{color:var(--muted)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1060px){.brand small{display:none}.btn .lbl-hide{display:none}}
+@media(max-width:820px){
+  .appbar{padding:8px 10px}.brand b{font-size:15px}
+  .workspace{padding:10px 10px 0;overflow:auto}
+  .panes{grid-template-columns:1fr;grid-auto-rows:minmax(280px,1fr);flex:none;min-height:0}
+  .dock{flex-basis:300px}
+  .status .hide-s{display:none}
+  .btn.primary kbd{display:none}
+}
+@media print{.appbar,.status,.dock,.splitter{display:none}}
+
+#out .sys,.sys{color:var(--warn);font-weight:600}
+
+/* ---------- files ---------- */
+.dbody.files{font:14px/1.5 var(--font);padding:12px 16px}
+.ftools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fpath{font:12px var(--mono);color:var(--faint);direction:ltr;unicode-bidi:isolate;margin-inline-start:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.flist{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.frow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface2)}
+.frow.new{border-color:color-mix(in srgb,var(--ok) 55%,var(--border));background:color-mix(in srgb,var(--ok) 7%,var(--surface2))}
+.frow .ext{font:700 10.5px var(--mono);min-width:44px;text-align:center;padding:3px 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent);direction:ltr}
+.frow .fn{flex:1;min-width:120px;font:13.5px var(--mono);direction:ltr;text-align:start;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;unicode-bidi:isolate}
+.frow small{color:var(--faint);white-space:nowrap}
+.frow .acts{display:flex;gap:4px}
+.fprev{flex-basis:100%;padding-top:6px}
+.fprev img,.fprev video{max-width:100%;max-height:340px;border-radius:8px;border:1px solid var(--border);background:#fff}
+.fprev audio{width:min(480px,100%)}
+.fprev pre{margin:0;max-height:260px;overflow:auto;padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);font:12.5px/1.55 var(--mono);white-space:pre-wrap;direction:ltr;text-align:start;unicode-bidi:plaintext}
+.fprev iframe{width:100%;height:340px;border:1px solid var(--border);border-radius:8px;background:#fff}
+.dropping{outline:2px dashed var(--accent);outline-offset:-6px;background:var(--accent-soft)}
+.newfiles{margin:10px 0;padding:10px 12px;border:1px solid color-mix(in srgb,var(--ok) 40%,var(--border));background:var(--ok-soft);border-radius:10px;font:14px var(--font);white-space:normal!important}
+.newfiles b{display:block;color:var(--ok);margin-bottom:6px}
+.newfiles .nf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0}
+.newfiles .nf code{font:13px var(--mono);direction:ltr;unicode-bidi:isolate}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.6v14.8a.6.6 0 0 0 .9.5l12-7.4a.6.6 0 0 0 0-1L7.9 4.1a.6.6 0 0 0-.9.5z"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H16"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2.2h7.5A2.5 2.5 0 0 1 21 9.7v7.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></symbol>
+<symbol id="i-max" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+<symbol id="i-min" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></symbol>
+<symbol id="i-cols" viewBox="0 0 24 24"><rect x="3" y="4.5" width="8" height="15" rx="2"/><rect x="13" y="4.5" width="8" height="15" rx="2"/></symbol>
+<symbol id="i-term" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="m7.5 10 3 2.5-3 2.5M13 15h4"/></symbol>
+<symbol id="i-eraser" viewBox="0 0 24 24"><path d="m4.5 15.5 9-9a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L11 18.5H7z"/><path d="M11 18.5h9M8.5 11.5l4 4"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4v.1"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4m0 0L8 8m4-4 4 4M5 20h14"/></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 7h4v4H7zM13 7h4v4h-4zM9 11c0 3-1 4.5-3 5.5M15 11c0 3-1 4.5-3 5.5"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+</defs></svg>
+<div class="app" id="app">
+<header class="appbar">
+  <div class="brand"><div class="mark">py</div><div><b>פייתונית</b><small>פייתון בעברית, שורה מול שורה</small></div></div>
+  <div class="seg" role="tablist" aria-label="תצוגה">
+    <button id="t1" class="on" role="tab">עורך</button>
+    <button id="t2" role="tab">מילון <span id="cnt" style="opacity:.6;font-size:12px"></span></button>
+  </div>
+  <select id="ex" class="btn" aria-label="דוגמאות קוד">
+    <option value="" selected disabled>דוגמאות…</option>
+  </select>
+  <button id="btnProjects" class="btn"><svg class="i"><use href="#i-folder"/></svg><span class="lbl-hide">פרויקטים</span></button>
+  <div class="grow"></div>
+  <span class="conn" id="conn" title="מצב החיבור להרצה"><span class="dot"></span><span id="connTxt">מתחבר…</span></span>
+  <button id="btnRun" class="btn primary" title="הרצת הקוד (Ctrl+Enter)"><svg class="i fill"><use href="#i-play"/></svg><span>הרץ</span><kbd>Ctrl+↵</kbd></button>
+  <button id="btnStop" class="btn danger" hidden title="עצירת התוכנית"><svg class="i fill"><use href="#i-stop"/></svg><span>עצור</span></button>
+  <button id="btnDual" class="btn icon toggle on" title="מבט כפול: גלילה וסימון שורה מסונכרנים" aria-pressed="true"><svg class="i"><use href="#i-cols"/></svg></button>
+  <button id="btnTheme" class="btn icon" title="החלפת מצב בהיר / כהה"><svg class="i" id="themeIcon"><use href="#i-moon"/></svg></button>
+  <button id="btnSettings" class="btn icon" title="הגדרות"><svg class="i"><use href="#i-gear"/></svg></button>
+</header>
+
+<main>
+  <section id="edit" class="workspace">
+    <div class="panes" id="panes">
+      <section class="pane">
+        <div class="ph">
+          <span class="lang"><span class="tag">עב</span>עברית</span><span class="sp"></span>
+          <button id="dr" class="btn sm ghost" title="כיוון הכתיבה בעורך העברי">ימין ← שמאל</button>
+          <button id="c1" class="btn sm icon ghost" title="העתק את הקוד העברי"><svg class="i"><use href="#i-copy"/></svg></button>
+        </div>
+        <div class="ed" id="he"></div>
+      </section>
+      <section class="pane">
+        <div class="ph">
+          <span class="lang"><span class="tag py">PY</span>Python</span><span class="sp"></span>
+          <button id="dl" class="btn sm icon ghost" title="הורדה כקובץ main.py"><svg class="i"><use href="#i-down"/></svg></button>
+          <button id="c2" class="btn sm icon ghost" title="העתק את קוד Python"><svg class="i"><use href="#i-copy"/></svg></button>
+        </div>
+        <div class="ed" id="en"></div>
+      </section>
+    </div>
+    <div id="split" class="splitter" role="separator" aria-orientation="horizontal" tabindex="0" title="גררו כדי לשנות את גובה הפלט"></div>
+    <section id="outw" class="dock" aria-label="פלט">
+      <div class="dh">
+        <div class="seg sm" id="dtabs"><button id="dtOut" class="on"><svg class="i"><use href="#i-term"/></svg>פלט</button><button id="dtFiles"><svg class="i"><use href="#i-folder"/></svg>קבצים <span id="fcnt" style="opacity:.6"></span></button></div>
+        <span class="chip" id="chip"><span class="dot"></span><span id="chipTxt">מוכן</span></span>
+        <span class="grow"></span>
+        <button id="oCopy" class="btn sm icon ghost" title="העתקת הפלט"><svg class="i"><use href="#i-copy"/></svg></button>
+        <button id="oClear" class="btn sm icon ghost" title="ניקוי הפלט"><svg class="i"><use href="#i-eraser"/></svg></button>
+        <button id="oMax" class="btn sm ghost" title="הרחבת הפלט על חשבון העורכים"><svg class="i" id="oMaxI"><use href="#i-max"/></svg><span id="oMaxT">הרחב</span></button>
+        <button id="oHide" class="btn sm ghost" title="הסתרת הפלט"><svg class="i" id="oHideI"><use href="#i-chev"/></svg><span id="oHideT">הסתר</span></button>
+      </div>
+      <div class="dbody" id="obody"><div id="out"></div></div>
+      <div class="dbody files" id="fbody" hidden></div>
+      <div class="dfoot" id="dfoot" hidden>
+        <span>התוכנית רצה. כשהיא מבקשת קלט תופיע שורת הקלדה בתוך הפלט.</span><span class="grow"></span>
+        <button id="eofBtn" class="btn sm" title="סיום הקלט (Ctrl+D)">סיום קלט (EOF)</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="dict" hidden>
+    <div class="dwrap">
+      <div class="dtools">
+        <div class="search"><input id="q" placeholder="חיפוש באנגלית או בעברית…" aria-label="חיפוש במילון" autocomplete="off"><svg class="i"><use href="#i-search"/></svg></div>
+        <div class="seg sm" id="dcat"></div>
+      </div>
+      <div class="hint" style="padding-inline:0">לחיצה על מונח מעתיקה אותו. מונחים מתורגמים אוטומטית רק כשהם חלק מפקודות פייתון, ולא בתוך מחרוזות או הערות.</div>
+      <div id="dl2"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="status">
+  <span id="pos">שורה 1 · עמודה 1</span><span class="sep"></span>
+  <span id="st"></span><span class="sep hide-s"></span>
+  <span class="hide-s" id="saved">נשמר אוטומטית במכשיר</span>
+  <span class="grow"></span>
+  <span class="hide-s" id="hint">Ctrl+Space להשלמה · Ctrl+Enter להרצה</span>
+</footer>
+</div>
+
+<dialog id="dlgSet" aria-labelledby="dsT">
+  <div class="dlg-h"><h2 id="dsT">הגדרות</h2><button class="btn sm icon ghost" data-close title="סגירה"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="dlg-b" id="setBody"></div>
+</dialog>
+<dialog id="dlgPrj" aria-labelledby="dpT">
+  <div class="dlg-h"><h2 id="dpT">פרויקטים</h2><button class="btn sm icon ghost" data-close title="סגירה"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="dlg-b">
+    <div class="saverow"><input id="pn" placeholder="שם לפרויקט הנוכחי" maxlength="60" autocomplete="off"><button id="sv" class="btn primary"><svg class="i"><use href="#i-save"/></svg>שמור</button></div>
+    <div class="plist" id="plist"></div>
+    <div style="margin-top:14px"><button id="nw" class="btn"><svg class="i"><use href="#i-plus"/></svg>פרויקט חדש</button></div>
+  </div>
+</dialog>
+<div id="ac" hidden role="listbox" aria-label="השלמה אוטומטית"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const P=s=>{const o=Object.create(null);s.trim().split(/\s+/).forEach(x=>{const[a,b]=x.split(":");o[a]=b});return o};
+const D={
+k:P(`False:שקר None:כלום True:אמת and:וגם as:בתור assert:טען async:אסינכרוני await:המתן break:עצור class:מחלקה continue:המשך def:הגדר del:מחק elif:אחרת_אם else:אחרת except:תפוס finally:לבסוף for:לכל from:מתוך global:גלובלי if:אם import:ייבא in:בתוך is:הוא lambda:למדה nonlocal:לא_מקומי not:לא or:או pass:דלג raise:זרוק return:החזר try:נסה while:כל_עוד with:עם yield:תוצא match:התאם case:מקרה self:עצמי`),
+b:P(`print:הדפס input:קלט len:אורך range:טווח int:שלם float:עשרוני str:מחרוזת list:רשימה dict:מילון set:קבוצה tuple:צמד bool:בוליאני type:סוג abs:ערך_מוחלט sum:סכום min:מינימום max:מקסימום sorted:ממויין reversed:הפוך map:מפה filter:סנן zip:צרף enumerate:מנה open:פתח round:עגל pow:חזקה isinstance:הוא_מסוג issubclass:תת_מחלקה_של any:כלשהו all:כולם id:מזהה chr:תו ord:קוד_תו hex:הקסה bin:בינארי oct:אוקטלי format:עצב repr:ייצוג iter:איטרטור next:הבא divmod:חלק_ושארית dir:תכונות help:עזרה eval:הערך exec:בצע super:אב object:אובייקט bytes:בתים bytearray:מערך_בתים complex:מרוכב frozenset:קבוצה_קפואה getattr:קבל_תכונה setattr:קבע_תכונה hasattr:יש_תכונה delattr:מחק_תכונה callable:ניתן_לקריאה vars:משתנים globals:גלובליים locals:מקומיים slice:פרוס property:מאפיין staticmethod:שיטה_סטטית classmethod:שיטת_מחלקה hash:גיבוב compile:קמפל exit:צא quit:סיים ascii:אסקי breakpoint:נקודת_עצירה Exception:חריגה BaseException:חריגת_בסיס ValueError:שגיאת_ערך TypeError:שגיאת_סוג KeyError:שגיאת_מפתח IndexError:שגיאת_אינדקס ZeroDivisionError:שגיאת_חילוק_באפס FileNotFoundError:שגיאת_קובץ_חסר NameError:שגיאת_שם AttributeError:שגיאת_תכונה ImportError:שגיאת_ייבוא RuntimeError:שגיאת_ריצה RecursionError:שגיאת_רקורסיה StopIteration:סוף_איטרציה KeyboardInterrupt:הפסקת_מקלדת AssertionError:שגיאת_טענה OSError:שגיאת_מערכת OverflowError:שגיאת_גלישה NotImplementedError:שגיאה_לא_ממומשת aiter:איטרטור_אסינכרוני anext:הבא_אסינכרוני NotImplemented:לא_ממומש Ellipsis:שלוש_נקודות SyntaxError:שגיאת_תחביר IndentationError:שגיאת_הזחה UnicodeDecodeError:שגיאת_פענוח_יוניקוד UnicodeEncodeError:שגיאת_קידוד_יוניקוד PermissionError:שגיאת_הרשאה TimeoutError:שגיאת_זמן_קצוב LookupError:שגיאת_חיפוש ArithmeticError:שגיאת_חשבון EOFError:שגיאת_סוף_קובץ MemoryError:שגיאת_זיכרון SystemExit:יציאת_מערכת GeneratorExit:יציאת_מחולל FloatingPointError:שגיאת_נקודה_צפה UnboundLocalError:שגיאת_משתנה_לא_מאותחל ConnectionError:שגיאת_חיבור Warning:אזהרה DeprecationWarning:אזהרת_התיישנות UserWarning:אזהרת_משתמש`),
+m:P(`append:הוסף extend:הרחב insert:הכנס remove:הסר pop:שלוף sort:מיין reverse:היפוך clear:נקה copy:העתק index:אינדקס count:ספור keys:מפתחות values:ערכים items:פריטים get:קבל update:עדכן setdefault:קבע_ברירת_מחדל upper:גדולות lower:קטנות strip:גזור lstrip:גזור_התחלה rstrip:גזור_סוף split:פצל join:חבר replace:החלף find:מצא startswith:מתחיל_ב endswith:מסתיים_ב format:עצב title:כותרת capitalize:אות_ראשונה_גדולה isdigit:הוא_ספרה isalpha:הוא_אות add:הוסף_איבר discard:השמט union:איחוד intersection:חיתוך read:קרא write:כתוב readline:קרא_שורה readlines:קרא_שורות close:סגור sqrt:שורש sin:סינוס cos:קוסינוס tan:טנגנס pi:פאי floor:רצפה ceil:תקרה log:לוגריתם randint:אקראי_שלם choice:בחר shuffle:ערבב sleep:המתן_שניות now:עכשיו casefold:קיפול_אותיות center:מרכז ljust:ריפוד_שמאל rjust:ריפוד_ימין zfill:מילוי_אפסים encode:קדד decode:פענח splitlines:פצל_שורות partition:חלק_לשלושה rfind:מצא_מסוף rindex:אינדקס_מסוף rsplit:פצל_מסוף swapcase:החלף_גודל_אותיות isalnum:הוא_אות_או_ספרה isnumeric:הוא_מספרי isdecimal:הוא_עשרוני isspace:הוא_רווח islower:הוא_קטנות isupper:הוא_גדולות istitle:הוא_כותרת isidentifier:הוא_מזהה isascii:הוא_אסקי removeprefix:הסר_תחילית removesuffix:הסר_סיומת translate:תרגם maketrans:צור_טבלת_תרגום format_map:עצב_ממפה popitem:שלוף_פריט fromkeys:מפתחות_מרשימה difference:הפרש symmetric_difference:הפרש_סימטרי issubset:הוא_תת_קבוצה issuperset:הוא_על_קבוצה isdisjoint:הוא_זר intersection_update:עדכן_חיתוך difference_update:עדכן_הפרש seek:דלג_למיקום tell:מיקום_נוכחי flush:רוקן_מאגר truncate:קצר writelines:כתוב_שורות readable:ניתן_לקריאה_מקובץ writable:ניתן_לכתיבה pow:חזקה exp:אקספוננט asin:ארק_סינוס acos:ארק_קוסינוס atan:ארק_טנגנס atan2:ארק_טנגנס2 sinh:סינוס_היפרבולי cosh:קוסינוס_היפרבולי tanh:טנגנס_היפרבולי degrees:לדרגות radians:לרדיאנים hypot:אורך_אלכסון factorial:עצרת gcd:מחלק_משותף_מקסימלי lcm:כפולה_משותפת_מינימלית isqrt:שורש_שלם trunc:קטוע fmod:שארית_עשרונית isnan:הוא_לא_מספר isinf:הוא_אינסוף isfinite:הוא_סופי comb:צירופים perm:תמורות prod:מכפלה log2:לוגריתם_בסיס_2 log10:לוגריתם_עשרוני random:אקראי_עשרוני uniform:אחיד randrange:אקראי_בטווח sample:דגום choices:בחר_כמה seed:זרע gauss:גאוס getcwd:ספרייה_נוכחית listdir:רשימת_ספריות mkdir:צור_ספרייה makedirs:צור_ספריות rmdir:מחק_ספרייה rename:שנה_שם environ:משתני_סביבה system:הרץ_פקודה getenv:קבל_משתנה_סביבה path:נתיב exists:קיים isfile:הוא_קובץ isdir:הוא_ספרייה basename:שם_בסיס dirname:שם_ספרייה abspath:נתיב_מלא splitext:פצל_סיומת getsize:גודל_קובץ walk:סרוק chdir:החלף_ספרייה argv:ארגומנטים exit:צא_מהתוכנית stdin:קלט_תקני stdout:פלט_תקני stderr:שגיאה_תקנית version:גרסה platform:פלטפורמה modules:מודולים perf_counter:מונה_ביצועים strftime:עצב_זמן localtime:זמן_מקומי gmtime:זמן_אוניברסלי mktime:צור_זמן monotonic:מונה_רציף today:היום date:תאריך year:שנה month:חודש day:יום hour:שעה minute:דקה second:שנייה weekday:יום_בשבוע isoformat:עצב_איזו strptime:פענח_זמן timedelta:הפרש_זמן total_seconds:סך_שניות dumps:המר_לטקסט loads:טען_מטקסט dump:כתוב_ג_יסון load:קרא_ג_יסון search:חפש findall:מצא_הכל sub:החלף_תבנית fullmatch:התאם_מלא finditer:מצא_כל_ההתאמות group:קבוצה_מותאמת groups:קבוצות_מותאמות span:טווח_התאמה start:התחלה end:סוף_התאמה match:התאם_תחילה compile:קמפל_תבנית appendleft:הוסף_משמאל popleft:שלוף_משמאל most_common:הנפוצים_ביותר rotate:סובב reduce:צמצם partial:חלקי lru_cache:מטמון_אחרון chain:שרשר permutations:תמורות_איטרציה combinations:צירופים_איטרציה product:מכפלה_קרטזית accumulate:צבור groupby:קבץ_לפי islice:פרוס_איטרטור`),
+mod:P(`math:מתמטיקה random:אקראי time:זמן os:מערכת_הפעלה sys:מערכת json:ג_יסון datetime:תאריך_שעה re:ביטוי_רגולרי collections:אוספים itertools:כלי_איטרציה functools:כלי_פונקציות string:מחרוזות statistics:סטטיסטיקה typing:טיפוסים pathlib:נתיבים csv:טבלאות_csv copy:העתקה dataclasses:מחלקות_נתונים threading:תהליכונים subprocess:תהליכי_משנה argparse:ארגומנטים_שורת_פקודה logging:רישום unittest:בדיקות_יחידה heapq:ערימה bisect:חיפוש_בינארי decimal:עשרוני_מדויק fractions:שברים enum:ספירה pickle:כבישה hashlib:גיבוב_קריפטוגרפי urllib:כתובות_רשת asyncio:אסינכרוני_io`),
+kw:P(`sep:מפריד end:סיום key:מפתח reverse:הפוך file:קובץ flush:ריקון encoding:קידוד mode:מצב default:ברירת_מחדל start:התחלה`)};
+const U=P(`__init__:__אתחול__ __str__:__לטקסט__ __repr__:__ייצוג__ __len__:__אורך__ __name__:__שם__ __eq__:__שווה__ __lt__:__קטן_מ__ __gt__:__גדול_מ__ __add__:__חיבור__ __getitem__:__קבל_פריט__ __setitem__:__קבע_פריט__ __iter__:__איטרציה__ __next__:__הבא__ __enter__:__כניסה__ __exit__:__יציאה__ __call__:__קריאה__ __contains__:__מכיל__ __doc__:__תיעוד__ __file__:__קובץ__ __new__:__חדש__ __del__:__מחיקה__ Counter:מונה_פריטים defaultdict:מילון_ברירת_מחדל deque:תור_דו_כיווני OrderedDict:מילון_מסודר namedtuple:צמד_בעל_שם`);
+Object.assign(D.b,U);Object.assign(D.m,U);
+Object.assign(D.mod,P(`numpy:נאמי pandas:פנדס matplotlib:מטפלוטליב pyplot:פייפלוט requests:ריקווסטס PIL:פיל sklearn:סקילרן bs4:בי_אס_פור plotly:פלוטלי openpyxl:אופן_פייקסל pygame:פייגיים tkinter:טקינטר sqlite3:מסד_נתונים urllib:כתובות_רשת pathlib:נתיבים`));
+Object.assign(D.m,P(`DataFrame:טבלת_נתונים Series:סדרה read_csv:קרא_csv to_csv:ל_csv head:ראש tail:זנב describe:תאר groupby:קבץ_לפי merge:מזג concat:שרשר_טבלאות plot:שרטט figure:איור show:הצג title:כותרת xlabel:תווית_ציר_x ylabel:תווית_ציר_y scatter:פיזור hist:היסטוגרמה get:קבל post:שלח_פוסט json:ג_יסון status_code:קוד_מצב content:תוכן text:טקסט array:מערך zeros:אפסים ones:אחדים mean:ממוצע median:חציון std:סטיית_תקן`));
+const R={};for(const c in D){R[c]=Object.create(null);for(const a in D[c])R[c][D[c][a]]=a}
+
+
+/* ================= helpers ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS={g:k=>{try{return localStorage.getItem(k)}catch{return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
+const WORDCH=/[\p{L}\p{N}_]/u,NONWORD=/[^\p{L}\p{N}_]/u;
+
+/* ================= tokenizer ================= */
+const TK=/(#[^\n]*)|([a-zA-Z]{0,2}(?:"""[\s\S]*?(?:"""|$)|'''[\s\S]*?(?:'''|$)|"(?:\\.|[^"\\\n])*(?:"|(?=\n|$))|'(?:\\.|[^'\\\n])*(?:'|(?=\n|$))))|(\d[\w.]*)|([\p{L}_][\p{L}\p{N}_]*)|(\s+)|([\s\S])/gu;
+const tok=s=>[...s.matchAll(TK)].map(m=>({t:m[1]!=null?"c":m[2]!=null?"s":m[3]!=null?"n":m[4]!=null?"i":m[5]!=null?"w":"o",v:m[0]}));
+const si=(T,i,d)=>{for(i+=d;i>=0&&i<T.length;i+=d)if(T[i].t!="w")return i;return -1};
+const IMP=["import","from","ייבא","מתוך"],IMPLINE=["import","ייבא"],AS=["as","בתור"];
+
+/* ================= translation ================= */
+const fstr=(v,to)=>/^[a-zA-Z]*/.exec(v)[0].toLowerCase().includes("f")?v.replace(/\{\{|\}\}|\{([^{}]*)\}/g,(a,e)=>{if(e==null)return a;const k=e.search(/[:!]/);return "{"+conv(k<0?e:e.slice(0,k),to)+(k<0?"":e.slice(k))+"}"}):v;
+/* returns [{o:original token, n:translated token}] so cursor positions can be mapped */
+function convTokens(src,to){
+  const M=to=="he"?D:R,T=tok(src);let depth=0,first=null;
+  return T.map((x,i)=>{
+    if(x.t=="w"){if(x.v.includes("\n"))first=null;return{o:x.v,n:x.v}}
+    if(first===null)first=x.v;
+    if(x.t=="s")return{o:x.v,n:fstr(x.v,to)};
+    if(x.t=="o"){if("([{".includes(x.v))depth++;else if(")]}".includes(x.v))depth--;return{o:x.v,n:x.v}}
+    if(x.t!="i")return{o:x.v,n:x.v};
+    const v=x.v,a=si(T,i,-1),b=si(T,i,1),p=a<0?"":T[a].v,n=b<0?"":T[b].v;
+    if(p==".")return{o:v,n:M.m[v]??v};
+    const impLine=IMPLINE.includes(first)&&!AS.includes(p);
+    const r=M.k[v]??M.b[v]??(M.mod[v]&&(IMP.includes(p)||n=="."||impLine)?M.mod[v]:null)??(M.kw[v]&&depth>0&&n=="="&&(T[b+1]||{}).v!="="?M.kw[v]:null)??v;
+    return{o:v,n:r};
+  });
+}
+const conv=(src,to)=>convTokens(src,to).map(x=>x.n).join("");
+function mapPos(arr,pos){
+  let o=0,n=0;
+  for(const x of arr){
+    const ol=x.o.length,nl=x.n.length;
+    if(pos<=o+ol)return x.o===x.n?n+(pos-o):Math.max(n,n+nl-(o+ol-pos));
+    o+=ol;n+=nl;
+  }
+  return n;
+}
+/* Make a pane consistent with its own language: commands typed in the other language are translated. */
+function normalize(lang,text,pos){
+  if(lang==="en"){const t=convTokens(text,"en");return{text:t.map(x=>x.n).join(""),pos:mapPos(t,pos)}}
+  const t1=convTokens(text,"en"),mid=t1.map(x=>x.n).join(""),p1=mapPos(t1,pos),t2=convTokens(mid,"he");
+  return{text:t2.map(x=>x.n).join(""),pos:mapPos(t2,p1)};
+}
+function diffRange(a,b){
+  let p=0;const m=Math.min(a.length,b.length);
+  while(p<m&&a[p]===b[p])p++;
+  let s=0;while(s<m-p&&a[a.length-1-s]===b[b.length-1-s])s++;
+  return{a:p,b:a.length-s,ins:b.slice(p,b.length-s)};
+}
+/* true when position `a` of text `v` is inside a string literal or a comment */
+function inStrOrComment(v,a){
+  const T=tok(v.slice(0,a)),x=T[T.length-1];
+  if(!x)return false;
+  if(x.t=="c")return true;
+  if(x.t=="s"){
+    const body=x.v.replace(/^[a-zA-Z]{0,2}/,""),q=body.slice(0,3)==='"""'||body.slice(0,3)==="'''"?body.slice(0,3):body[0];
+    return !(body.length>=q.length*2&&body.endsWith(q)&&!/\\$/.test(body.slice(0,-q.length)));
+  }
+  return false;
+}
+
+/* ================= highlighting ================= */
+const CONSTS=new Set(["True","False","None","אמת","שקר","כלום"]),SELF=new Set(["self","עצמי"]),DEFW=new Set(["def","class","הגדר","מחלקה"]);
+function cls(T,i){
+  const x=T[i];
+  if(x.t=="c")return"c";if(x.t=="s")return"s";if(x.t=="n")return"n";if(x.t!="i")return"";
+  const v=x.v,a=si(T,i,-1),p=a<0?"":T[a].v;
+  if(p===".")return(D.m[v]||R.m[v])?"b":"";
+  if(DEFW.has(p))return"fn";
+  if(CONSTS.has(v))return"cn";
+  if(SELF.has(v))return"sf";
+  if(D.k[v]||R.k[v])return"k";
+  if(D.b[v]||R.b[v]||D.mod[v]||R.mod[v])return"b";
+  return"";
+}
+const TERM=new Set(["k","b","cn"]);
+function hl(src){
+  const T=tok(src);let n=0;
+  const h=T.map((x,i)=>{const c=cls(T,i);if(TERM.has(c))n++;return c?`<i class="${c}">${esc(x.v)}</i>`:esc(x.v)}).join("")+"\n";
+  return{h,n};
+}
+/* Hebrew pane: every token is an isolate, so operators and numbers keep a sensible visual order inside an RTL line */
+function hlx(src,d){
+  const T=tok(src),O=/^[-+*\/%=<>!&|^~@]$/;let n=0,h="";
+  for(let i=0;i<T.length;i++){
+    const x=T[i];let v=x.v,c="",dr="auto";
+    if(x.t=="w"){h+=v;continue}
+    if(x.t=="o"){if(O.test(v))while(T[i+1]&&T[i+1].t=="o"&&O.test(T[i+1].v))v+=T[++i].v;dr=d}
+    else if(x.t=="c"){c="c";dr=d}
+    else if(x.t=="s"){c="s"}
+    else if(x.t=="n"){c="n";dr="ltr"}
+    else c=cls(T,i);
+    if(TERM.has(c))n++;
+    h+=`<i${c?` class="${c}"`:""} dir="${dr}">${esc(v)}</i>`;
+  }
+  return{h:h+"\n",n};
+}
+
+/* ================= settings ================= */
+const DEF={autoTranslate:true,autoComplete:true,smartInsert:true,autoPair:true,sync:true,lineHl:true,lineNums:true,fontSize:15,theme:"auto",heDir:"rtl",limit:300,clearOnRun:true};
+let S={...DEF};
+try{S={...DEF,...JSON.parse(LS.g("pyit_set")||"{}")}}catch{}
+const saveS=()=>LS.s("pyit_set",JSON.stringify(S));
+let LH=24;
+function applyLayoutVars(){
+  LH=Math.round(S.fontSize*1.6);
+  const r=document.documentElement.style;r.setProperty("--fs",S.fontSize+"px");r.setProperty("--lh",LH+"px");
+}
+applyLayoutVars();
+const PAD=14;
+
+/* ================= shared editing behaviour ================= */
+const OPEN={"(":")","[":"]","{":"}",'"':'"',"'":"'"};
+const lineStart=(v,a)=>v.lastIndexOf("\n",a-1)+1;
+const lineAt=(v,p)=>{let n=0;for(let i=v.indexOf("\n");i>=0&&i<p;i=v.indexOf("\n",i+1))n++;return n};
+
+function editorKeys(e,ev){
+  if(ev.isComposing)return;
+  if(AC.hook(e,ev))return;
+  const k=ev.key,m=ev.ctrlKey||ev.metaKey;
+  if(k.length===1&&NONWORD.test(k)&&!m)AC.hide();
+  if(m&&k===" "){ev.preventDefault();AC.show(e,true);return}
+  if(m&&k==="/"){ev.preventDefault();toggleComment(e);return}
+  if(m||ev.altKey)return;
+  const[a,b]=e.cursor();
+  if(k==="Tab"){ev.preventDefault();indent(e,ev.shiftKey);return}
+  if(k==="Enter"){ev.preventDefault();newline(e);return}
+  if(k==="Backspace"&&a===b&&softBackspace(e)){ev.preventDefault();return}
+  if(S.autoPair&&pairKey(e,ev)){ev.preventDefault();return}
+}
+function newline(e){
+  const v=e.get(),[a,b]=e.cursor(),l=lineStart(v,a),line=v.slice(l,a),ind=line.match(/^ */)[0];
+  const more=/[:(\[{]\s*$/.test(line)&&!inStrOrComment(v,a)?"    ":"";
+  if(more&&"([{".includes(v[a-1])&&")]}".includes(v[b]||"#"))e.edit(a,b,"\n"+ind+more+"\n"+ind,1+ind.length+4);
+  else e.edit(a,b,"\n"+ind+more);
+}
+function blockRange(v,a,b){
+  const ls=lineStart(v,a);let end=(b>a&&v[b-1]==="\n")?b-1:v.indexOf("\n",b);if(end<0)end=v.length;
+  return[ls,end];
+}
+function indent(e,dedent){
+  const v=e.get(),[a,b]=e.cursor();
+  if(a===b&&!dedent){const col=a-lineStart(v,a);e.edit(a,b," ".repeat(4-col%4));return}
+  const[ls,end]=blockRange(v,a,b),lines=v.slice(ls,end).split("\n");
+  const nb=lines.map(l=>dedent?l.replace(/^ {1,4}/,""):(l.trim()?"    "+l:l)).join("\n");
+  if(nb===v.slice(ls,end))return;
+  e.edit(ls,end,nb);
+  e.setCursor(ls,ls+nb.length);
+}
+function toggleComment(e){
+  const v=e.get(),[a,b]=e.cursor(),[ls,end]=blockRange(v,a,b),lines=v.slice(ls,end).split("\n");
+  const real=lines.filter(l=>l.trim());if(!real.length)return;
+  const all=real.every(l=>/^\s*#/.test(l)),minInd=Math.min(...real.map(l=>l.match(/^ */)[0].length));
+  const nb=lines.map(l=>{if(!l.trim())return l;return all?l.replace(/^(\s*)# ?/,"$1"):l.slice(0,minInd)+"# "+l.slice(minInd)}).join("\n");
+  e.edit(ls,end,nb);e.setCursor(ls,ls+nb.length);
+}
+function softBackspace(e){
+  const v=e.get(),[a]=e.cursor(),l=lineStart(v,a),pre=v.slice(l,a);
+  if(a>0&&v[a-1] in OPEN&&v[a]===OPEN[v[a-1]]&&S.autoPair){e.edit(a-1,a+1,"");return true}
+  if(pre.length>1&&/^ +$/.test(pre)){const n=((pre.length-1)%4)+1;if(n>1){e.edit(a-n,a,"");return true}}
+  return false;
+}
+function pairKey(e,ev){
+  const k=ev.key;if(k.length!==1)return false;
+  const[a,b]=e.cursor(),v=e.get(),prev=v[a-1]||"",next=v[b]||"";
+  if(a!==b){if(k in OPEN){e.edit(a,b,k+v.slice(a,b)+OPEN[k]);e.setCursor(a+1,b+1);return true}return false}
+  if(")]}".includes(k)&&next===k){e.setCursor(a+1,a+1);return true}
+  if(k==='"'||k==="'"){
+    if(next===k){e.setCursor(a+1,a+1);return true}
+    if(WORDCH.test(prev)||WORDCH.test(next)||inStrOrComment(v,a))return false;
+    e.edit(a,b,k+k,1);return true;
+  }
+  if("([{".includes(k)){
+    if(inStrOrComment(v,a))return false;
+    if(next===""||/\s/.test(next)||")]}".includes(next)){e.edit(a,b,k+OPEN[k],1);return true}
+  }
+  return false;
+}
+
+/* ================= English / code editor (textarea over a highlighted layer) ================= */
+function mkTA(host){
+  host.innerHTML='<div class="gut"><div class="gin"></div></div><div class="wrap"><div class="mk cur"></div><div class="mk errl"></div><div class="hlw"><pre class="hl" aria-hidden="true"></pre><pre class="hl mirror" aria-hidden="true"></pre></div><textarea class="ta" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="עורך Python"></textarea></div>';
+  const g=host.querySelector(".gin"),w=host.querySelector(".wrap"),mC=host.querySelector(".mk.cur"),mE=host.querySelector(".mk.errl"),h=host.querySelector(".hl"),mir=host.querySelector(".mirror"),t=host.querySelector(".ta");
+  host.dir="ltr";t.dir="ltr";h.dir="ltr";mir.dir="ltr";
+  let busy=false,pend=null,curLine=-1,errLine=-1;
+  const ins=s=>{
+    if(s===""){document.execCommand("delete");return}
+    if(!document.execCommand("insertText",false,s)){t.setRangeText(s,t.selectionStart,t.selectionEnd,"end");t.dispatchEvent(new InputEvent("input",{inputType:"insertText",data:s}))}
+  };
+  const e={lang:"en",t,host,n:0,cb:null,
+    get:()=>t.value,
+    set(v){t.value=v;e.r()},
+    r(){const o=hl(t.value);h.innerHTML=o.h;e.n=o.n;g.textContent=Array.from({length:t.value.split("\n").length},(_,i)=>i+1).join("\n")+"\n";e.s()},
+    s(){const x=`translate(${-t.scrollLeft}px,${-t.scrollTop}px)`;h.style.transform=x;g.style.transform=`translateY(${-t.scrollTop}px)`;e.place()},
+    place(){
+      const top=l=>(PAD+l*LH-t.scrollTop)+"px";
+      mC.style.display=curLine>=0&&S.lineHl?"block":"none";mC.style.top=top(curLine);
+      mE.style.display=errLine>=0?"block":"none";mE.style.top=top(errLine);
+    },
+    mark(line,strong){curLine=line;mC.classList.toggle("strong",!!strong);e.place()},
+    markErr(line){errLine=line;e.place()},
+    cursor:()=>[t.selectionStart,t.selectionEnd],
+    setCursor(a,b){t.focus();t.setSelectionRange(a,b);e.scb&&e.scb()},
+    focus:()=>t.focus(),
+    edit(a,b,s,off=s.length){t.focus();t.setSelectionRange(a,b);pend=a+off;ins(s);if(pend!=null){t.setSelectionRange(pend,pend);pend=null}e.scb&&e.scb()},
+    caretRect(){
+      const p=t.selectionStart;mir.innerHTML=esc(t.value.slice(0,p))+'<span id="cm">​</span>';mir.style.transform="";
+      const sp=mir.querySelector("#cm"),r=w.getBoundingClientRect();
+      return{x:r.left+sp.offsetLeft-t.scrollLeft,y:r.top+sp.offsetTop-t.scrollTop,h:LH,rtl:false};
+    },
+    dir(){},
+    normalize(){
+      if(!S.autoTranslate)return false;
+      const v=t.value,pos=pend!=null?pend:t.selectionStart,r=normalize("en",v,pos);
+      if(r.text===v)return false;
+      busy=true;const d=diffRange(v,r.text);t.setSelectionRange(d.a,d.b);ins(d.ins);t.setSelectionRange(r.pos,r.pos);pend=null;busy=false;return true;
+    }};
+  t.addEventListener("input",ev=>{
+    if(busy)return;
+    const d=ev.data||"",norm=ev.inputType==="insertFromPaste"||ev.inputType==="insertFromDrop"||(ev.inputType==="insertText"&&NONWORD.test(d));
+    e.r();
+    if(norm&&e.normalize())e.r();
+    else if(pend!=null){t.setSelectionRange(pend,pend);pend=null}
+    e.cb&&e.cb(ev);
+  });
+  t.addEventListener("keydown",ev=>editorKeys(e,ev));
+  t.addEventListener("scroll",()=>{e.s();e.onscroll&&e.onscroll()});
+  t.addEventListener("blur",()=>{if(e.normalize()){e.r();e.cb&&e.cb()}});
+  for(const n of["keyup","mouseup","focus"])t.addEventListener(n,()=>e.scb&&e.scb());
+  return e;
+}
+
+/* ================= Hebrew editor (contenteditable, every token is a bidi isolate) ================= */
+function mkCE(host,base){
+  host.innerHTML='<div class="gut"><div class="gin"></div></div><div class="wrap"><div class="mk cur"></div><div class="mk errl"></div><div class="ce" role="textbox" aria-multiline="true" aria-label="עורך עברית"></div></div>';
+  const g=host.querySelector(".gin"),w=host.querySelector(".wrap"),mC=host.querySelector(".mk.cur"),mE=host.querySelector(".mk.errl"),el=host.querySelector(".ce");
+  el.contentEditable="plaintext-only";if(el.contentEditable!="plaintext-only")el.contentEditable="true";
+  el.spellcheck=false;
+  let H=[],hi=-1,comp=false,lastPush=0,curLine=-1,errLine=-1;
+  const pos=()=>{const s=getSelection();if(!s.rangeCount||!el.contains(s.anchorNode))return null;const r=s.getRangeAt(0),f=(n,o)=>{const q=document.createRange();q.selectNodeContents(el);q.setEnd(n,o);return q.toString().length};return[f(r.startContainer,r.startOffset),f(r.endContainer,r.endOffset)]};
+  const setPos=(a,b)=>{
+    const f=o=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n,c=0;while(n=w.nextNode()){if(o<=c+n.length)return[n,o-c];c+=n.length}return[el,el.childNodes.length]};
+    const[s,so]=f(a),[x,xo]=f(b),r=document.createRange();r.setStart(s,so);r.setEnd(x,xo);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);
+  };
+  const view=()=>{
+    const s=getSelection();if(!s.rangeCount)return;
+    let r=s.getRangeAt(0).cloneRange();r.collapse(false);let b=r.getBoundingClientRect();
+    if(!b.width&&!b.height){const q=r.getClientRects();if(q.length)b=q[q.length-1];else return}
+    const er=el.getBoundingClientRect(),m=30;let dx=0,dy=0;
+    if(b.bottom>er.bottom-m)dy=b.bottom-(er.bottom-m);else if(b.top<er.top+m)dy=b.top-(er.top+m);
+    if(b.right>er.right-m)dx=b.right-(er.right-m);else if(b.left<er.left+m)dx=b.left-(er.left+m);
+    if(dx||dy)el.scrollBy(dx,dy);
+  };
+  const draw=v=>{const o=hlx(v,el.dir||base);el.innerHTML=o.h;e.n=o.n;g.textContent=Array.from({length:v.split("\n").length},(_,i)=>i+1).join("\n")+"\n";e.s()};
+  const e={lang:"he",t:el,host,n:0,cb:null,
+    get:()=>el.textContent.replace(/\n$/,""),
+    set(v){draw(v);H=[[v,null]];hi=0},
+    r(){const v=e.get(),p=pos();draw(v);if(p)setPos(Math.min(p[0],v.length),Math.min(p[1],v.length))},
+    s(){g.style.transform=`translateY(${-el.scrollTop}px)`;e.place()},
+    place(){
+      const top=l=>(PAD+l*LH-el.scrollTop)+"px";
+      mC.style.display=curLine>=0&&S.lineHl?"block":"none";mC.style.top=top(curLine);
+      mE.style.display=errLine>=0?"block":"none";mE.style.top=top(errLine);
+    },
+    mark(line,strong){curLine=line;mC.classList.toggle("strong",!!strong);e.place()},
+    markErr(line){errLine=line;e.place()},
+    dir(d){host.dir=el.dir=d;e.r()},
+    cursor:()=>pos()||[0,0],
+    setCursor(a,b){setPos(a,b);el.focus();view();e.scb&&e.scb()},
+    focus:()=>el.focus(),
+    caretRect(){
+      const s=getSelection();let b=null;
+      if(s.rangeCount){const r=s.getRangeAt(0).cloneRange();r.collapse(true);b=r.getBoundingClientRect();if(!b.width&&!b.height){const q=r.getClientRects();b=q.length?q[0]:null}}
+      if(!b||(!b.width&&!b.height&&!b.top)){const r=el.getBoundingClientRect();return{x:r.left+30,y:r.top+30,h:LH,rtl:el.dir==="rtl"}}
+      return{x:b.left,y:b.top,h:Math.max(b.height,LH),rtl:el.dir==="rtl"};
+    },
+    edit(a,b,s,off=s.length){const v=e.get();apply(v.slice(0,a)+s+v.slice(b),a+off,S.autoTranslate&&NONWORD.test(s),false)},
+  };
+  /* write text + caret back, optionally normalising foreign-language commands, then record history */
+  function apply(nv,c,norm,coalesce,typ){
+    if(norm){const r=normalize("he",nv,c);nv=r.text;c=r.pos}
+    draw(nv);setPos(Math.min(c,nv.length),Math.min(c,nv.length));view();
+    const now=Date.now();
+    H=H.slice(0,hi+1);
+    if(coalesce&&hi>0&&now-lastPush<700)H[hi]=[nv,pos()];else{H.push([nv,pos()]);if(H.length>400)H.shift();hi=H.length-1}
+    lastPush=now;
+    e.scb&&e.scb();e.cb&&e.cb(!!typ);
+  }
+  const restore=s=>{draw(s[0]);const L=s[0].length,p=s[1]||[L,L];setPos(Math.min(p[0],L),Math.min(p[1],L));view();e.scb&&e.scb();e.cb&&e.cb()};
+  el.addEventListener("input",ev=>{
+    if(comp)return;
+    const d=ev.data||"",norm=S.autoTranslate&&(ev.inputType==="insertFromDrop"||(ev.inputType==="insertText"&&NONWORD.test(d)));
+    const v=e.get(),p=pos()||[v.length,v.length];
+    apply(v,p[0],norm,ev.inputType==="insertText"&&!NONWORD.test(d),/^(insertText|delete)/.test(ev.inputType||""));
+  });
+  el.addEventListener("compositionstart",()=>comp=true);
+  el.addEventListener("compositionend",()=>{comp=false;const v=e.get(),p=pos()||[v.length];apply(v,p[0],false,true)});
+  el.addEventListener("paste",ev=>{ev.preventDefault();const[a,b]=e.cursor(),s=(ev.clipboardData.getData("text/plain")||"").replace(/\r\n?/g,"\n");const v=e.get();apply(v.slice(0,a)+s+v.slice(b),a+s.length,S.autoTranslate,false)});
+  el.addEventListener("scroll",()=>{e.s();e.onscroll&&e.onscroll()});
+  el.addEventListener("keydown",ev=>{
+    const k=ev.key,m=ev.ctrlKey||ev.metaKey;
+    if(m&&(k==="z"||k==="Z")){ev.preventDefault();if(ev.shiftKey){if(hi<H.length-1)restore(H[++hi])}else if(hi>0)restore(H[--hi]);return}
+    if(m&&k==="y"){ev.preventDefault();if(hi<H.length-1)restore(H[++hi]);return}
+    editorKeys(e,ev);
+  });
+  el.addEventListener("blur",()=>{if(!S.autoTranslate)return;const v=e.get(),r=normalize("he",v,(pos()||[0])[0]);if(r.text!==v){draw(r.text);H.push([r.text,null]);hi=H.length-1;e.cb&&e.cb()}});
+  for(const n of["keyup","mouseup","focus"])el.addEventListener(n,()=>e.scb&&e.scb());
+  e.dir(base);
+  return e;
+}
+
+/* ================= smart autocomplete ================= */
+/* Ranking for what you started typing:
+   1) prefix matches first (either language),
+   2) how many times the command already appears in THIS program,
+   3) how often you used it in earlier sessions,
+   4) general popularity,
+   then everything else alphabetically. */
+const POP=("print input len range str int float list dict if else elif for while def return import from class try except True False None append sum min max sorted open in not and or is as with pass break continue self lambda raise finally set tuple bool type abs round enumerate zip map filter join split format upper lower strip replace keys values items get pop sort remove insert extend index count find startswith endswith read write close math random time os sys json datetime re isinstance any all reversed ValueError TypeError KeyError IndexError Exception yield global del assert nonlocal is None randint sqrt floor ceil pi sleep now").split(" ");
+const POPR=Object.create(null);POP.forEach((w,i)=>{if(!(w in POPR))POPR[w]=i});
+const ALLE=[];
+for(const[kind,map]of Object.entries(D))for(const[en,he]of Object.entries(map))ALLE.push({en,he,kind});
+const KNOWN=new Set(ALLE.map(x=>x.en));
+const SUFFIX={if:" ",elif:" ",while:" ",for:" ",in:" ",not:" ",and:" ",or:" ",is:" ",import:" ",from:" ",as:" ",def:" ",class:" ",with:" ",lambda:" ",del:" ",assert:" ",global:" ",nonlocal:" ",else:":",try:":",finally:":"};
+const KIND_LABEL={k:["מילת מפתח","k"],b:["מובנה","b"],m:["שיטה","m"],mod:["מודול","b"],kw:["ארגומנט","m"],fn:["פונקציה שלך","v"],cls:["מחלקה שלך","v"],var:["משתנה","v"]};
+let HIST={};try{HIST=JSON.parse(LS.g("pyit_hist")||"{}")}catch{}
+const bump=(w,n=1)=>{HIST[w]=Math.min(60,(HIST[w]||0)+n)};
+const saveHist=()=>LS.s("pyit_hist",JSON.stringify(HIST));
+
+const AC={el:$("#ac"),open:false,ed:null,items:[],idx:0,range:null,
+  /* identifier statistics of the current program (the word being typed is excluded) */
+  stats(e,a,b){
+    const v=e.get(),rest=v.slice(0,a)+v.slice(b),en=e.lang==="he"?conv(rest,"en"):rest,T=tok(en),count=Object.create(null),user=Object.create(null);
+    T.forEach((x,i)=>{
+      if(x.t!=="i")return;
+      count[x.v]=(count[x.v]||0)+1;
+      if(!KNOWN.has(x.v)&&!IMP.includes(x.v)&&!user[x.v]){
+        const p=si(T,i,-1),pv=p<0?"":T[p].v;
+        user[x.v]=pv==="def"?"fn":pv==="class"?"cls":"var";
+      }
+    });
+    return{count,user};
+  },
+  context(e,a,p){
+    const v=e.get(),pre=v.slice(0,a),T=tok(pre),n=si(T,T.length,-1),prev=n<0?null:T[n];
+    const line=pre.slice(lineStart(pre,pre.length)),lt=tok(line).filter(x=>x.t!=="w");
+    const pv=prev?prev.v:"";
+    let depth=0;for(const x of T)if(x.t==="o"){if("([{".includes(x.v))depth++;else if(")]}".includes(x.v))depth=Math.max(0,depth-1)}
+    if(pv===".")return"member";
+    if(DEFW.has(pv))return"newname";
+    if(IMPLINE.includes(pv))return"import";
+    if(lt.length&&IMPLINE.includes(lt[0].v)&&pv===",")return"import";
+    if(lt.length&&["from","מתוך"].includes(lt[0].v)){const hasImp=lt.some(x=>IMPLINE.includes(x.v));return hasImp?"fromnames":"import"}
+    if(["as","בתור"].includes(pv))return"newname";
+    if(depth>0&&(pv==="("||pv===","))return"arg";
+    return"expr";
+  },
+  candidates(e,force){
+    const v=e.get(),p=e.cursor()[0],m=/[\p{L}\p{N}_]*$/u.exec(v.slice(0,p)),w=m[0],a=p-w.length;
+    if(!force&&(!w||/^\d/.test(w)))return null;
+    if(inStrOrComment(v,p))return null;
+    const ctx=AC.context(e,a,p);
+    if(ctx==="newname"&&!force)return null;
+    const{count,user}=AC.stats(e,a,p),he=e.lang==="he",needle=w.toLowerCase(),pool=[];
+    const add=(en,hebrew,kind)=>pool.push({en,he:hebrew,kind});
+    const cats=ctx==="member"?["m"]:ctx==="import"?["mod"]:ctx==="fromnames"?["m","b"]:ctx==="arg"?["b","k","kw","mod"]:["k","b","mod"];
+    for(const x of ALLE)if(cats.includes(x.kind))add(x.en,x.he,x.kind);
+    if(ctx!=="import")for(const name of Object.keys(user))add(name,"",user[name]);
+    const out=[],seen=new Set();
+    for(const x of pool){
+      const main=x.he?(he?x.he:x.en):x.en,alt=x.he?(he?x.en:x.he):"";
+      const names=[main,alt].filter(Boolean);let tier=9,hit=-1,hitAlt=false;
+      if(!needle)tier=0;
+      else names.forEach((nm,i)=>{
+        const l=nm.toLowerCase();let t=9;
+        if(l.startsWith(needle))t=0;else if(needle.length>1&&(l.includes("_"+needle)))t=1;else if(needle.length>1&&l.includes(needle))t=2;
+        if(t<tier){tier=t;hit=i}
+      });
+      if(tier>=9)continue;
+      if(main===w)continue;                       // already typed in full
+      const key=main+"|"+x.kind;if(seen.has(key))continue;seen.add(key);
+      hitAlt=hit===1;
+      out.push({main,alt,en:x.en,kind:x.kind,tier,hitAlt,cnt:count[x.en]||0,hist:HIST[x.en]||0,pop:x.en in POPR?POPR[x.en]:1000+(x.kind==="k"?0:x.kind==="b"?100:300),len:main.length});
+    }
+    out.sort((p,q)=>p.tier-q.tier||q.cnt-p.cnt||q.hist-p.hist||p.pop-q.pop||p.len-q.len||p.main.localeCompare(q.main));
+    return{items:out.slice(0,8),a,p,w,ctx};
+  },
+  show(e,force=false){
+    if(AC.skip)return;
+    if(!S.autoComplete&&!force)return AC.hide();
+    const r=AC.candidates(e,force);
+    if(!r||!r.items.length)return AC.hide();
+    AC.ed=e;AC.items=r.items;AC.idx=0;AC.range=[r.a,r.p];AC.w=r.w;AC.open=true;AC.render();
+  },
+  render(){
+    const el=AC.el,he=AC.ed.lang==="he",hl=(s,on)=>{
+      const w=AC.w;if(!w||!on)return esc(s);const i=s.toLowerCase().indexOf(w.toLowerCase());
+      return i<0?esc(s):esc(s.slice(0,i))+"<mark>"+esc(s.slice(i,i+w.length))+"</mark>"+esc(s.slice(i+w.length));
+    };
+    el.dir=he?"rtl":"ltr";
+    el.innerHTML=AC.items.map((x,i)=>{
+      const[kl,kc]=KIND_LABEL[x.kind];
+      return`<div class="aci${i===AC.idx?" sel":""}" role="option" data-i="${i}"><span class="kd ${kc}">${kl}</span><span class="w" dir="auto">${hl(x.main,!x.hitAlt)}</span>${x.cnt?`<span class="u" title="מופיע בקוד שלך">${x.cnt}×</span>`:""}${x.alt?`<span class="t" dir="${he?"ltr":"rtl"}">${hl(x.alt,x.hitAlt)}</span>`:""}</div>`;
+    }).join("")+`<div class="acf"><span>↑↓ בחירה</span><span>Tab / Enter אישור</span><span>Esc סגירה</span></div>`;
+    el.hidden=false;
+    const r=AC.ed.caretRect(),w=el.offsetWidth,h=el.offsetHeight,vw=innerWidth,vh=innerHeight;
+    let x=AC.ed.lang==="he"&&r.rtl?r.x-w+16:r.x-8,y=r.y+r.h+4;
+    if(y+h>vh-8)y=Math.max(8,r.y-h-4);
+    x=Math.max(8,Math.min(x,vw-w-8));
+    el.style.left=x+"px";el.style.top=y+"px";
+    const s=el.querySelector(".aci.sel");if(s&&s.scrollIntoView)s.scrollIntoView({block:"nearest"});
+  },
+  hide(){if(!AC.open&&AC.el.hidden)return;AC.open=false;AC.el.hidden=true;AC.ed=null},
+  accept(i=AC.idx){
+    const e=AC.ed,x=AC.items[i];if(!e||!x)return;
+    const[a,b]=AC.range;let ins=x.main,off=null;
+    if(S.smartInsert){
+      if(x.kind==="kw")ins+="=";
+      else if(x.kind==="k"&&SUFFIX[x.en])ins+=SUFFIX[x.en];
+    }
+    bump(x.en,2);saveHist();
+    AC.hide();
+    AC.skip=true;
+    try{e.edit(a,b,ins,ins.length)}finally{AC.skip=false}
+  },
+  /* keyboard handling while the list is open; returns true when the key was consumed */
+  hook(e,ev){
+    if(!AC.open||AC.ed!==e)return false;
+    const k=ev.key;
+    if(k==="ArrowDown"||k==="ArrowUp"){ev.preventDefault();AC.idx=(AC.idx+(k==="ArrowDown"?1:-1)+AC.items.length)%AC.items.length;AC.render();return true}
+    if((k==="Enter"||k==="Tab")&&!ev.shiftKey&&!ev.ctrlKey&&!ev.metaKey){ev.preventDefault();AC.accept();return true}
+    if(k==="Escape"){ev.preventDefault();AC.hide();return true}
+    if(["ArrowLeft","ArrowRight","Home","End","PageUp","PageDown"].includes(k))AC.hide();
+    return false;
+  }
+};
+AC.el.addEventListener("mousedown",ev=>{ev.preventDefault();const t=ev.target.closest(".aci");if(t)AC.accept(+t.dataset.i)});
+addEventListener("resize",()=>AC.hide());
+
+/* ================= editors wiring ================= */
+const he=mkCE($("#he"),S.heDir),en=mkTA($("#en"));
+let scrollLock=false,lastPane=en;
+const typing=a=>a===true||!!(a&&a.inputType&&/^(insertText|delete)/.test(a.inputType));
+function afterChange(e,arg){
+  upd();he.markErr(-1);en.markErr(-1);
+  if(typing(arg))AC.show(e);else AC.hide();
+}
+he.cb=arg=>{en.set(conv(he.get(),"en"));afterChange(he,arg)};
+en.cb=arg=>{he.set(conv(en.get(),"he"));afterChange(en,arg)};
+function syncMarks(e){
+  lastPane=e;
+  const o=e===he?en:he,v=e.get(),a=e.cursor()[0],line=lineAt(v,a);
+  $("#pos").textContent=`שורה ${line+1} · עמודה ${a-lineStart(v,a)+1}`;
+  e.mark(line,true);o.mark(S.sync?line:-1,false);
+}
+he.scb=()=>syncMarks(he);en.scb=()=>syncMarks(en);
+function syncScroll(a,b){if(!S.sync||scrollLock)return;if(b.t.scrollTop!==a.t.scrollTop){scrollLock=true;b.t.scrollTop=a.t.scrollTop;requestAnimationFrame(()=>scrollLock=false)}}
+he.onscroll=()=>syncScroll(he,en);en.onscroll=()=>syncScroll(en,he);
+for(const e of[he,en]){e.t.addEventListener("blur",()=>setTimeout(()=>{if(AC.ed===e)AC.hide()},120));e.t.addEventListener("mouseup",()=>AC.hide())}
+let tm;
+function upd(){
+  const L=en.get().split("\n").length;
+  $("#st").textContent=`${L===1?"שורה אחת":L+" שורות"} · ${en.n===1?"מונח פייתון אחד":en.n+" מונחי פייתון"}`;
+  clearTimeout(tm);tm=setTimeout(()=>LS.s("pyit_d",en.get()),500);
+}
+const put=c=>{en.set(c);he.set(conv(c,"he"));he.markErr(-1);en.markErr(-1);upd()};
+
+/* ================= toast / clipboard ================= */
+let toastT;const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1600)};
+const copyText=async(s,msg="הועתק ללוח")=>{try{await navigator.clipboard.writeText(s)}catch{const a=document.createElement("textarea");a.value=s;document.body.append(a);a.select();document.execCommand("copy");a.remove()}toast(msg)};
+$("#c1").onclick=()=>copyText(he.get());$("#c2").onclick=()=>copyText(en.get());
+$("#dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([en.get()],{type:"text/x-python;charset=utf-8"}));a.download="main.py";document.body.append(a);a.click();a.remove();toast("הקובץ main.py הורד")};
+
+/* ================= settings ================= */
+const effDark=()=>S.theme==="dark"||(S.theme==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);
+function applySettings(){
+  const r=document.documentElement;
+  if(S.theme==="auto")delete r.dataset.theme;else r.dataset.theme=S.theme;
+  $("#themeIcon").innerHTML=`<use href="#i-${effDark()?"sun":"moon"}"/>`;
+  applyLayoutVars();
+  $("#app").classList.toggle("nonums",!S.lineNums);$("#app").classList.toggle("nolinehl",!S.lineHl);
+  const d=$("#btnDual");d.classList.toggle("on",S.sync);d.setAttribute("aria-pressed",S.sync);
+  if(he.t.dir!==S.heDir)he.dir(S.heDir);
+  $("#dr").textContent=S.heDir==="rtl"?"ימין ← שמאל":"שמאל ← ימין";
+  he.r();en.r();
+  syncMarks(lastPane);
+  if(!S.sync){he.mark(-1);en.mark(-1);syncMarks(lastPane)}
+}
+function setS(k,v){S[k]=v;saveS();applySettings();if(typeof layoutDock==="function")layoutDock()}
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",()=>S.theme==="auto"&&applySettings());
+$("#btnDual").onclick=()=>{setS("sync",!S.sync);toast(S.sync?"המבטים מסונכרנים":"המבטים נפרדים")};
+$("#btnTheme").onclick=()=>setS("theme",effDark()?"light":"dark");
+$("#dr").onclick=()=>setS("heDir",S.heDir==="rtl"?"ltr":"rtl");
+
+const SCHEMA=[
+ {g:"כתיבה ותרגום",items:[
+  {k:"autoTranslate",t:"tog",l:"תרגום אוטומטי של פקודות מהשפה השנייה",d:"כותבים פקודת פייתון בשפה של העורך השני (למשל print בעורך העברי, או הדפס בעורך האנגלי) והיא מתורגמת מיד לשפת העורך שבו אתם כותבים. מתורגמות רק פקודות, לא טקסט בתוך מחרוזות או הערות."},
+  {k:"autoComplete",t:"tog",l:"השלמה אוטומטית",d:"הצעות תוך כדי הקלדה: קודם מה שחוזר הכי הרבה בקוד שלכם, אחר כך מה שאתם משתמשים בו הרבה, ואז פקודות נפוצות."},
+  {k:"smartInsert",t:"tog",l:"השלמת מבנה",d:"מוסיפה רווח או נקודתיים אחרי מילות מפתח (למשל if ו־else), וסימן = אחרי ארגומנט בשם."},
+  {k:"autoPair",t:"tog",l:"סגירה אוטומטית של סוגריים ומרכאות"}]},
+ {g:"מראה",items:[
+  {k:"theme",t:"seg",l:"ערכת נושא",opts:[["auto","אוטומטי"],["light","בהיר"],["dark","כהה"]]},
+  {k:"fontSize",t:"range",l:"גודל גופן בעורכים",min:12,max:22},
+  {k:"heDir",t:"seg",l:"כיוון הכתיבה בעורך העברי",opts:[["rtl","ימין לשמאל"],["ltr","שמאל לימין"]]},
+  {k:"lineNums",t:"tog",l:"מספרי שורות"},
+  {k:"sync",t:"tog",l:"מבט כפול",d:"גלילה והדגשת שורה מסונכרנות בין שני העורכים."},
+  {k:"lineHl",t:"tog",l:"הדגשת השורה הפעילה"}]},
+ {g:"הרצה",items:[
+  {k:"limit",t:"sel",l:"מגבלת זמן ריצה",d:"הזמן שבו התוכנית ממתינה לקלט שלכם אינו נספר.",opts:[[30,"30 שניות"],[120,"2 דקות"],[300,"5 דקות"],[1800,"30 דקות"],[0,"ללא הגבלה"]]},
+  {k:"clearOnRun",t:"tog",l:"ניקוי הפלט בכל הרצה"}]},
+ {g:"נתונים",items:[
+  {t:"btn",l:"איפוס הלמידה של ההשלמה",d:"מוחק את הזיכרון של הפקודות שבהן השתמשתם בעבר.",b:"אפס",f:()=>{HIST={};saveHist();toast("הלמידה אופסה")}},
+  {t:"btn",l:"החזרת כל ההגדרות לברירת המחדל",b:"החזר",f:()=>{S={...DEF};saveS();applySettings();layoutDock();buildSettings();toast("ההגדרות אופסו")}}]}
+];
+function buildSettings(){
+  const b=$("#setBody");b.innerHTML="";
+  for(const grp of SCHEMA){
+    const g=document.createElement("div");g.className="grp";g.innerHTML=`<h4>${grp.g}</h4>`;
+    for(const it of grp.items){
+      const r=document.createElement("div");r.className="row";
+      r.innerHTML=`<div class="tx"><b>${it.l}</b>${it.d?`<small>${it.d}</small>`:""}</div>`;
+      let c;
+      if(it.t==="tog"){c=document.createElement("label");c.className="sw";c.innerHTML=`<input type="checkbox" ${S[it.k]?"checked":""} aria-label="${esc(it.l)}"><span></span>`;c.firstChild.onchange=e=>setS(it.k,e.target.checked)}
+      else if(it.t==="seg"){c=document.createElement("div");c.className="seg sm";it.opts.forEach(([v,l])=>{const x=document.createElement("button");x.textContent=l;x.className=S[it.k]===v?"on":"";x.onclick=()=>{setS(it.k,v);[...c.children].forEach(y=>y.classList.toggle("on",y===x))};c.append(x)})}
+      else if(it.t==="range"){c=document.createElement("div");c.style.cssText="display:flex;align-items:center;gap:8px";c.innerHTML=`<input type="range" min="${it.min}" max="${it.max}" value="${S[it.k]}" aria-label="${esc(it.l)}"><span class="val">${S[it.k]}px</span>`;c.firstChild.oninput=e=>{c.lastChild.textContent=e.target.value+"px";setS(it.k,+e.target.value)}}
+      else if(it.t==="sel"){c=document.createElement("select");c.className="btn";c.innerHTML=it.opts.map(([v,l])=>`<option value="${v}" ${S[it.k]===v?"selected":""}>${l}</option>`).join("");c.onchange=e=>setS(it.k,+e.target.value)}
+      else{c=document.createElement("button");c.className="btn sm";c.textContent=it.b;c.onclick=it.f}
+      r.append(c);g.append(r);
+    }
+    b.append(g);
+  }
+  const k=document.createElement("div");k.className="grp";
+  k.innerHTML=`<h4>קיצורי מקלדת</h4><div class="keys"><kbd>Ctrl+Enter</kbd><span>הרצה (או הרצה מחדש)</span><kbd>Ctrl+Space</kbd><span>פתיחת השלמה אוטומטית</span><kbd>Tab / Enter</kbd><span>אישור הצעה בהשלמה</span><kbd>Tab / Shift+Tab</kbd><span>הזחה והקטנת הזחה (גם לכמה שורות)</span><kbd>Ctrl+/</kbd><span>הוספה או הסרה של הערה בשורות שנבחרו</span><kbd>Ctrl+D</kbd><span>סיום קלט (EOF) בשורת הקלט של הפלט</span></div>`;
+  b.append(k);
+}
+function openDlg(d){if(!d.open)d.showModal()}
+for(const d of document.querySelectorAll("dialog")){d.addEventListener("click",e=>{if(e.target===d)d.close()});d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())}
+$("#btnSettings").onclick=()=>{buildSettings();openDlg($("#dlgSet"))};
+
+/* ================= projects ================= */
+let PR=[];try{PR=JSON.parse(LS.g("pyit")||"[]")}catch{}
+const savePR=()=>LS.s("pyit",JSON.stringify(PR));
+let curProject="";
+function drawProjects(){
+  const l=$("#plist");
+  if(!PR.length){l.innerHTML='<div class="hint" style="text-align:center">עדיין אין פרויקטים שמורים.</div>';return}
+  l.innerHTML="";
+  PR.slice().sort((a,b)=>(b.t||0)-(a.t||0)).forEach(p=>{
+    const d=document.createElement("div");d.className="pitem";
+    const when=p.t?new Date(p.t).toLocaleDateString("he-IL",{day:"numeric",month:"short"}):"";
+    d.innerHTML=`<svg class="i" style="color:var(--faint)"><use href="#i-folder"/></svg><b>${esc(p.n)}</b><small>${when}</small><button class="btn sm icon ghost" title="מחיקה" aria-label="מחיקת ${esc(p.n)}"><svg class="i"><use href="#i-trash"/></svg></button>`;
+    d.onclick=e=>{
+      if(e.target.closest("button")){if(confirm(`למחוק את "${p.n}"?`)){PR=PR.filter(x=>x!==p);savePR();drawProjects();toast("הפרויקט נמחק")}return}
+      curProject=p.n;put(p.c);$("#dlgPrj").close();toast(`נפתח: ${p.n}`);
+    };
+    l.append(d);
+  });
+}
+$("#btnProjects").onclick=()=>{$("#pn").value=curProject;drawProjects();openDlg($("#dlgPrj"))};
+function saveProject(){
+  const n=$("#pn").value.trim()||"ללא שם",c=en.get(),i=PR.findIndex(p=>p.n===n);
+  if(i<0)PR.push({n,c,t:Date.now()});else{PR[i].c=c;PR[i].t=Date.now()}
+  savePR();curProject=n;drawProjects();toast("הפרויקט נשמר במכשיר");
+}
+$("#sv").onclick=saveProject;$("#pn").onkeydown=e=>{if(e.key==="Enter")saveProject()};
+$("#nw").onclick=()=>{curProject="";$("#pn").value="";put("");$("#dlgPrj").close();he.focus()};
+
+/* ================= examples ================= */
+const EX=[
+["ציונים",`# מחשבון ציונים
+grades = {"Dana": 92, "Omer": 78, "Noa": 85}
+
+def average(values):
+    return sum(values) / len(values)
+
+for name, grade in grades.items():
+    if grade >= 90:
+        print(f"{name}: excellent")
+    elif grade >= 80:
+        print(f"{name}: good")
+    else:
+        print(f"{name}: keep going")
+
+print("Average:", round(average(list(grades.values())), 1))
+`],
+["קלט מהמשתמש",`# תוכנית שמבקשת קלט
+name = input("מה השם שלך? ")
+age = int(input("בן/בת כמה אתם? "))
+
+print(f"שלום {name}!")
+print(f"בשנה הבאה תהיו בני {age + 1}")
+
+if age >= 18:
+    print("אתם בוגרים")
+else:
+    print("אתם עדיין צעירים")
+`],
+["משחק ניחושים",`import random
+
+secret = random.randint(1, 20)
+tries = 0
+print("חשבתי על מספר בין 1 ל-20")
+
+while True:
+    try:
+        guess = int(input("מה הניחוש שלך? "))
+    except ValueError:
+        print("צריך להקליד מספר שלם")
+        continue
+    tries += 1
+    if guess < secret:
+        print("נמוך מדי")
+    elif guess > secret:
+        print("גבוה מדי")
+    else:
+        print(f"נכון! הצלחתם אחרי {tries} ניסיונות")
+        break
+`],
+["מחלקות וחריגות",`class Account:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            raise ValueError("Not enough funds")
+        self.balance -= amount
+        return self.balance
+
+acc = Account("Dana", 100)
+try:
+    acc.withdraw(250)
+except ValueError as err:
+    print("Error:", err)
+finally:
+    print("Done")
+`],
+["רשימות ומתמטיקה",`import math
+import random
+
+squares = [x ** 2 for x in range(1, 6) if x % 2 == 1 or x == 4]
+roots = list(map(lambda n: math.sqrt(n), squares))
+while True:
+    n = random.randint(1, 10)
+    if n not in squares and n is not None:
+        break
+print(sorted(squares, reverse=True), roots, n)
+`],
+["גרף (matplotlib)",`import matplotlib.pyplot as plt
+
+days = [1, 2, 3, 4, 5, 6, 7]
+steps = [3200, 5400, 4100, 7800, 6500, 9100, 8000]
+
+plt.plot(days, steps, marker="o")
+plt.title("Steps per day")
+plt.xlabel("Day")
+plt.ylabel("Steps")
+plt.grid(True)
+plt.show()
+`]];
+const ex=$("#ex");EX.forEach(([n],i)=>{const o=document.createElement("option");o.value=i;o.textContent=n;ex.append(o)});
+ex.onchange=()=>{const i=+ex.value;curProject="";put(EX[i][1]);ex.selectedIndex=0;toast(`נטענה דוגמה: ${EX[i][0]}`)};
+
+/* ================= dictionary ================= */
+const G=[["k","מילות מפתח"],["b","פונקציות מובנות וחריגות"],["mod","מודולים וספריות"],["m","שיטות (אחרי נקודה)"],["kw","ארגומנטים בשם"]];
+let dcat="all";
+$("#cnt").textContent="("+G.reduce((s,[c])=>s+Object.keys(D[c]).length,0)+")";
+{const seg=$("#dcat");[["all","הכול"],...G].forEach(([c,l])=>{const b=document.createElement("button");b.textContent=l;b.dataset.c=c;if(c==="all")b.className="on";b.onclick=()=>{dcat=c;[...seg.children].forEach(x=>x.classList.toggle("on",x===b));drawDict()};seg.append(b)})}
+function drawDict(){
+  const q=$("#q").value.trim().toLowerCase();let h="";
+  for(const[c,t]of G){
+    if(dcat!=="all"&&dcat!==c)continue;
+    const rows=Object.entries(D[c]).filter(([a,b])=>!q||a.toLowerCase().includes(q)||b.replace(/_/g," ").includes(q)||b.includes(q));
+    if(rows.length)h+=`<h3>${t}<small>${rows.length}</small></h3><div class="gr">`+rows.map(([a,b])=>`<button class="ch" data-w="${esc(a)}" title="לחצו להעתקה"><span>${esc(b.replace(/_/g," "))}</span><code>${esc(a)}</code></button>`).join("")+"</div>";
+  }
+  $("#dl2").innerHTML=h||'<p class="hint">לא נמצאו תוצאות.</p>';
+}
+$("#dl2").onclick=e=>{const b=e.target.closest(".ch");if(b)copyText(b.dataset.w,`הועתק: ${b.dataset.w}`)};
+$("#q").oninput=drawDict;drawDict();
+function tab(n){
+  $("#edit").hidden=!n;$("#dict").hidden=!!n;
+  $("#t1").classList.toggle("on",!!n);$("#t2").classList.toggle("on",!n);
+  if(n){he.r();en.r();layoutDock()}else $("#q").focus();
+}
+$("#t1").onclick=()=>tab(1);$("#t2").onclick=()=>tab(0);
+
+/* ================= output dock ================= */
+const dock=$("#outw"),ws=$("#edit"),obody=$("#obody"),out=$("#out"),split=$("#split");
+let oh=+LS.g("pyit_oh")||270,maximized=false,collapsed=false;
+const mobile=()=>innerWidth<=820;
+function layoutDock(animate){
+  if(ws.hidden)return;
+  dock.classList.toggle("animate",!!animate);
+  dock.classList.toggle("collapsed",collapsed);
+  const avail=ws.clientHeight-14-190;
+  const h=maximized?avail:Math.max(110,Math.min(oh,avail));
+  dock.style.setProperty("--oh",(mobile()?300:h)+"px");
+  $("#oMaxT").textContent=maximized?"הקטן":"הרחב";$("#oMaxI").innerHTML=`<use href="#i-${maximized?"min":"max"}"/>`;
+  $("#oHideT").textContent=collapsed?"הצג":"הסתר";$("#oHideI").style.transform=collapsed?"rotate(180deg)":"";
+  split.setAttribute("aria-valuenow",Math.round(h));
+}
+$("#oMax").onclick=()=>{if(collapsed)collapsed=false;maximized=!maximized;layoutDock(true)};
+$("#oHide").onclick=()=>{collapsed=!collapsed;layoutDock(true)};
+split.addEventListener("pointerdown",e=>{
+  e.preventDefault();split.setPointerCapture(e.pointerId);split.classList.add("drag");
+  const y0=e.clientY,h0=dock.offsetHeight,move=ev=>{collapsed=false;maximized=false;oh=h0-(ev.clientY-y0);layoutDock()};
+  const up=()=>{split.classList.remove("drag");split.removeEventListener("pointermove",move);split.removeEventListener("pointerup",up);LS.s("pyit_oh",Math.round(oh))};
+  split.addEventListener("pointermove",move);split.addEventListener("pointerup",up);
+});
+split.addEventListener("keydown",e=>{if(e.key==="ArrowUp"||e.key==="ArrowDown"){e.preventDefault();collapsed=false;maximized=false;oh+=(e.key==="ArrowUp"?1:-1)*30;layoutDock();LS.s("pyit_oh",Math.round(oh))}});
+split.addEventListener("dblclick",()=>{collapsed=!collapsed;layoutDock(true)});
+addEventListener("resize",()=>layoutDock());
+function revealDock(){if(collapsed){collapsed=false;layoutDock(true)}}
+
+/* ================= output rendering ================= */
+let curLine=null,qIn=null,lineCount=0,sess=null;
+const EMPTY=`<div class="empty" id="empty"><svg class="i"><use href="#i-term"/></svg><b>הפלט יופיע כאן</b><span>לחצו ▶ הרץ או Ctrl+Enter. תוכנית שמבקשת קלט תציג שורת הקלדה ממש כאן.</span></div>`;
+function resetOut(){out.innerHTML="";curLine=null;qIn=null;lineCount=0}
+function showEmpty(){out.innerHTML=EMPTY;curLine=null;lineCount=0}
+function newLine(){
+  const e=$("#empty");if(e)e.remove();
+  const d=document.createElement("div");d.dir="auto";out.append(d);curLine=d;
+  if(++lineCount>6000){while(out.children.length>5000)out.firstChild.remove();lineCount=out.children.length}
+  return d;
+}
+function addToLine(text,cls){
+  const segs=text.split("\r");
+  segs.forEach((sg,j)=>{
+    if(j>0&&curLine)[...curLine.children].forEach(c=>c!==qIn&&c.remove());
+    if(sg==="")return;
+    const line=curLine||newLine(),last=qIn&&qIn.parentNode===line?qIn.previousSibling:line.lastChild;
+    if(last&&last.nodeType===1&&last.tagName==="SPAN"&&last.className===(cls||"")){last.textContent+=sg;return}
+    const s=document.createElement("span");if(cls)s.className=cls;s.textContent=sg;
+    qIn&&qIn.parentNode===line?line.insertBefore(s,qIn):line.append(s);
+  });
+}
+function appendText(text,cls){
+  const parts=text.replace(/\r\n/g,"\n").split("\n");
+  for(let i=0;i<parts.length;i++){
+    if(parts[i]!=="")addToLine(parts[i],cls);
+    if(i<parts.length-1){if(!curLine)newLine();curLine=null}
+  }
+}
+const nearEnd=()=>obody.scrollHeight-obody.scrollTop-obody.clientHeight<60;
+const toEnd=()=>{obody.scrollTop=obody.scrollHeight};
+function addFigure(src){
+  const f=document.createElement("div");f.className="figure";
+  f.innerHTML=`<img alt="גרף שנוצר על ידי התוכנית" src="${src}"><div class="cap"><span>גרף</span><a download="figure.png" href="${src}">שמירה כתמונה</a></div>`;
+  curLine=null;const e=$("#empty");if(e)e.remove();out.append(f);
+  f.querySelector("img").onload=()=>toEnd();
+}
+const sizeIn=i=>i.style.width=Math.max(14,i.value.length+3)+"ch";
+function requestInput(){
+  if(!sess||sess.done)return;
+  if(sess.queue.length){submitInput(sess.queue.shift());return}
+  const line=curLine||newLine(),i=document.createElement("input");
+  i.className="inline-in";i.dir="auto";i.spellcheck=false;i.autocomplete="off";i.placeholder="הקלידו ולחצו Enter";i.setAttribute("aria-label","קלט לתוכנית");
+  line.append(i);qIn=i;sizeIn(i);revealDock();i.focus({preventScroll:true});toEnd();
+  i.oninput=()=>sizeIn(i);
+  i.onkeydown=ev=>{
+    if(ev.key==="Enter"&&!ev.ctrlKey&&!ev.metaKey){ev.preventDefault();submitInput(i.value)}
+    else if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==="d"){ev.preventDefault();sendEOF()}
+  };
+  i.onpaste=ev=>{
+    const t=(ev.clipboardData.getData("text/plain")||"").replace(/\r\n?/g,"\n");
+    if(!t.includes("\n"))return;
+    ev.preventDefault();
+    const ls=t.replace(/\n$/,"").split("\n"),first=ls.shift();sess.queue.push(...ls);submitInput(i.value+first);
+  };
+}
+async function submitInput(text){
+  const me=sess;if(!me||me.done)return;
+  const line=(qIn&&qIn.parentNode)||curLine||newLine();
+  if(qIn){qIn.remove();qIn=null}
+  const s=document.createElement("span");s.className="echo";s.textContent=text;line.append(s);curLine=null;toEnd();
+  try{await api("/stdin",{id:me.id,text:text+"\n"})}catch{}
+}
+async function sendEOF(){
+  const me=sess;if(!me||me.done)return;
+  if(qIn){const line=qIn.parentNode;qIn.remove();qIn=null;const s=document.createElement("span");s.className="sys";s.textContent="⏎ סוף קלט";line.append(s);curLine=null}
+  try{await api("/stdin",{id:me.id,text:"",eof:true})}catch{}
+}
+$("#eofBtn").onclick=sendEOF;
+
+
+/* ================= files ================= */
+let FILES={dir:"",files:[]},fPrev=null,fUrl=null,filesBefore=null,dtab="out";
+const fmtSize=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(1)+" MB";
+const extOf=p=>(p.split(".").pop()||"").toLowerCase();
+const KINDS={img:["png","jpg","jpeg","gif","webp","svg","bmp"],aud:["mp3","wav","ogg","m4a","flac","aac"],vid:["mp4","webm","mov"],txt:["txt","csv","json","py","md","log","html","xml","yaml","yml","ini","tsv"],pdf:["pdf"]};
+const kindOf=p=>{const e=extOf(p);for(const k in KINDS)if(KINDS[k].includes(e))return k;return""};
+async function loadFiles(){try{FILES=await api("/files")}catch{return false}$("#fcnt").textContent=FILES.files.length?`(${FILES.files.length})`:"";return true}
+function dockTab(t){
+  dtab=t;const f=t==="files";
+  $("#obody").hidden=f;$("#fbody").hidden=!f;
+  $("#dtOut").classList.toggle("on",!f);$("#dtFiles").classList.toggle("on",f);
+  for(const id of["oCopy","oClear"])$("#"+id).hidden=f;
+  $("#dfoot").hidden=f||!(sess&&!sess.done);
+  if(f){revealDock();renderFiles()}
+}
+$("#dtOut").onclick=()=>dockTab("out");$("#dtFiles").onclick=()=>dockTab("files");
+async function renderFiles(){
+  const fb=$("#fbody");
+  if(!window.PYIT_TOKEN){fb.innerHTML='<div class="empty"><b>ניהול קבצים זמין רק בהפעלה דרך pythonit.py</b></div>';return}
+  await loadFiles();
+  const rows=FILES.files.slice().sort((a,b)=>b.t-a.t).map(f=>{
+    const k=kindOf(f.p),when=new Date(f.t).toLocaleString("he-IL",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}),isNew=filesBefore&&(!(f.p in filesBefore)||filesBefore[f.p]!==f.t);
+    return`<div class="frow${isNew?" new":""}" data-p="${esc(f.p)}"><span class="ext">${esc(extOf(f.p)||"FILE").slice(0,5).toUpperCase()}</span><span class="fn" title="${esc(f.p)}">${esc(f.p)}</span><small><bdi>${fmtSize(f.size)}</bdi> · <bdi>${when}</bdi></small><span class="acts">
+${k?`<button class="btn sm icon ghost" data-a="prev" title="תצוגה מקדימה / נגינה"><svg class="i"><use href="#i-eye"/></svg></button>`:""}
+<button class="btn sm ghost" data-a="open" title="פתיחה בתוכנה ברירת המחדל של המחשב"><svg class="i"><use href="#i-ext"/></svg>פתח</button>
+<button class="btn sm icon ghost" data-a="ins" title="הכנסת שם הקובץ לקוד"><svg class="i"><use href="#i-quote"/></svg></button>
+<button class="btn sm icon ghost" data-a="dl" title="הורדה"><svg class="i"><use href="#i-down"/></svg></button>
+<button class="btn sm icon ghost" data-a="del" title="מחיקה"><svg class="i"><use href="#i-trash"/></svg></button></span>${fPrev===f.p?'<div class="fprev" id="fprev">טוען…</div>':""}</div>`;
+  }).join("");
+  fb.innerHTML=`<div class="ftools"><button class="btn sm primary" data-a="up"><svg class="i"><use href="#i-upload"/></svg>בחירת קבצים מהמחשב</button><button class="btn sm" data-a="dir"><svg class="i"><use href="#i-folder"/></svg>פתח את התיקייה</button><button class="btn sm icon ghost" data-a="ref" title="רענון"><svg class="i"><use href="#i-refresh"/></svg></button><span class="fpath" title="תיקיית העבודה של התוכניות">${esc(FILES.dir)}</span></div>
+<div class="hint" style="padding:8px 0 0">אפשר גם לגרור קבצים לכאן. התוכנית רואה אותם לפי השם בלבד, למשל <code dir="ltr">open("data.txt")</code>. קבצים שהתוכנית יוצרת נשמרים באותה תיקייה.</div>
+<div class="flist">${rows||'<div class="empty" style="min-height:120px"><b>אין עדיין קבצים</b><span>קבצים שתבחרו או שהתוכנית תיצור יופיעו כאן.</span></div>'}</div><input type="file" id="fIn" multiple hidden>`;
+  $("#fIn").onchange=e=>uploadFiles(e.target.files);
+  if(fPrev)showPreview(fPrev);
+}
+async function showPreview(p){
+  const box=$("#fprev");if(!box)return;
+  if(fUrl){URL.revokeObjectURL(fUrl);fUrl=null}
+  try{
+    const r=await fetch("/file?p="+encodeURIComponent(p),{headers:{"X-Token":window.PYIT_TOKEN}});
+    if(!r.ok)throw 0;const k=kindOf(p);
+    if(k==="txt"){const t=await r.text();box.innerHTML="<pre></pre>";box.firstChild.textContent=t.slice(0,200000)+(t.length>200000?"\n…":"");return}
+    const u=fUrl=URL.createObjectURL(await r.blob());
+    box.innerHTML=k==="img"?`<img src="${u}" alt="">`:k==="aud"?`<audio controls src="${u}"></audio>`:k==="vid"?`<video controls src="${u}"></video>`:`<iframe src="${u}"></iframe>`;
+    if(k==="aud"){const a=box.querySelector("audio");a.play().catch(()=>{})}
+  }catch{box.textContent="לא ניתן להציג תצוגה מקדימה (הקובץ גדול מדי או לא נקרא)."}
+}
+async function uploadFiles(list){
+  let n=0;
+  for(const f of list){
+    try{
+      const r=await fetch("/upload?name="+encodeURIComponent(f.name),{method:"POST",headers:{"X-Token":window.PYIT_TOKEN},body:f});
+      const j=await r.json();if(j.name)n++;else toast(j.error||"ההעלאה נכשלה");
+    }catch{toast("ההעלאה נכשלה")}
+  }
+  if(n)toast(n===1?"הקובץ נוסף לתיקיית העבודה":`${n} קבצים נוספו לתיקיית העבודה`);
+  dockTab("files");
+}
+async function fileAction(a,p){
+  if(a==="open"){const r=await api("/open",{p}).catch(()=>({}));if(!r.ok)toast("לא ניתן לפתוח את הקובץ אוטומטית. פתחו אותו מהתיקייה.")}
+  else if(a==="prev"){fPrev=fPrev===p?null:p;renderFiles()}
+  else if(a==="ins"){const[x,y]=en.cursor();en.edit(x,y,JSON.stringify(p));toast("שם הקובץ הוכנס לקוד")}
+  else if(a==="dl"){const r=await fetch("/file?p="+encodeURIComponent(p),{headers:{"X-Token":window.PYIT_TOKEN}});if(!r.ok)return toast("הקובץ גדול מדי להורדה מכאן. פתחו אותו מהתיקייה.");const u=URL.createObjectURL(await r.blob()),l=document.createElement("a");l.href=u;l.download=p.split("/").pop();document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+  else if(a==="del"){if(confirm(`למחוק את "${p}"?`)){await api("/delete",{p}).catch(()=>{});if(fPrev===p)fPrev=null;renderFiles()}}
+}
+$("#fbody").addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,row=b.closest(".frow");
+  if(a==="up")$("#fIn").click();
+  else if(a==="dir")api("/reveal",{p:""}).then(r=>r.ok||toast("לא ניתן לפתוח את התיקייה אוטומטית")).catch(()=>{});
+  else if(a==="ref")renderFiles();
+  else if(row)fileAction(a,row.dataset.p);
+});
+for(const el of[dock]){
+  el.addEventListener("dragover",e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes("Files")){e.preventDefault();el.classList.add("dropping")}});
+  el.addEventListener("dragleave",e=>{if(e.target===el||!el.contains(e.relatedTarget))el.classList.remove("dropping")});
+  el.addEventListener("drop",e=>{el.classList.remove("dropping");if(e.dataTransfer&&e.dataTransfer.files.length&&window.PYIT_TOKEN){e.preventDefault();uploadFiles(e.dataTransfer.files)}});
+}
+/* after a run: show files the program created or changed, with one-click open */
+async function announceNewFiles(){
+  if(!window.PYIT_TOKEN||!filesBefore)return;
+  if(!await loadFiles())return;
+  const ch=FILES.files.filter(f=>filesBefore[f.p]!==f.t).sort((a,b)=>b.t-a.t).slice(0,6);
+  if(!ch.length)return;
+  const stick=nearEnd(),d=document.createElement("div");d.className="newfiles";
+  d.innerHTML="<b>הקבצים שהתוכנית יצרה או עדכנה</b>"+ch.map(f=>`<div class="nf" data-p="${esc(f.p)}"><code>${esc(f.p)}</code><small style="color:var(--muted)">${fmtSize(f.size)}</small>${kindOf(f.p)?`<button class="btn sm" data-nf="prev">${kindOf(f.p)==="aud"?"נגן":"תצוגה מקדימה"}</button>`:""}<button class="btn sm primary" data-nf="open">פתח</button><button class="btn sm" data-nf="dir">הצג בתיקייה</button></div>`).join("");
+  curLine=null;out.append(d);if(stick)toEnd();
+  filesBefore=Object.fromEntries(FILES.files.map(f=>[f.p,f.t]));
+}
+out.addEventListener("click",e=>{
+  const b=e.target.closest("[data-nf]");if(!b)return;const p=b.closest(".nf").dataset.p;
+  if(b.dataset.nf==="open")fileAction("open",p);
+  else if(b.dataset.nf==="dir")api("/reveal",{p}).then(r=>r.ok||toast("לא ניתן לפתוח את התיקייה אוטומטית")).catch(()=>{});
+  else{fPrev=p;dockTab("files")}
+});
+
+/* ================= running code ================= */
+async function api(path,body){
+  const r=await fetch(path,{method:body?"POST":"GET",headers:{"X-Token":window.PYIT_TOKEN||"","Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,cache:"no-store"});
+  if(!r.ok)throw new Error(r.status);
+  return r.json();
+}
+const errorGuide={NameError:"נעשה שימוש בשם שעדיין לא הוגדר. בדקו איות, או הגדירו אותו לפני השימוש.",TypeError:"סוג הערך אינו מתאים לפעולה. למשל, אי אפשר לחבר טקסט למספר בלי המרה.",KeyError:"המפתח המבוקש אינו נמצא במילון.",IndexError:"ניסיתם לגשת למקום שאינו קיים ברשימה או במחרוזת.",ZeroDivisionError:"אי אפשר לחלק באפס.",AttributeError:"לאובייקט הזה אין את התכונה או השיטה המבוקשת.",ValueError:"הערך תקין מבחינת סוגו, אך אינו מתאים לפעולה. למשל, ניסיון להמיר טקסט שאינו מספר למספר.",IndentationError:"ההזחה אינה עקבית. השתמשו בארבעה רווחים לכל רמה.",TabError:"שילוב של טאבים ורווחים בהזחה. השתמשו ברווחים בלבד.",SyntaxError:"Python לא הצליחה להבין את המבנה של השורה. בדקו סוגריים, נקודתיים ומרכאות.",ModuleNotFoundError:"הספרייה אינה מותקנת בסביבת Python הזו.",ImportError:"לא ניתן לייבא את הרכיב המבוקש. בדקו את השם ואת ההתקנה.",FileNotFoundError:"הקובץ לא נמצא. קבצים נשמרים ונקראים מתיקיית Pythonit שבתיקיית הבית.",EOFError:"התוכנית ביקשה קלט, אבל הקלט נסגר. הקלידו ערך בשורת הקלט שמופיעה בפלט, ואל תסיימו את הקלט מוקדם.",RecursionError:"הפונקציה קוראת לעצמה שוב ושוב בלי עצירה. בדקו את תנאי העצירה.",UnboundLocalError:"משתנה בתוך פונקציה נקרא לפני שקיבל ערך.",OverflowError:"התוצאה גדולה מדי עבור הסוג הזה של מספר.",PermissionError:"אין הרשאה לגשת לקובץ או לתיקייה.",AssertionError:"תנאי של assert לא התקיים.",NotImplementedError:"הפונקציה עדיין לא מומשה.",KeyboardInterrupt:"התוכנית הופסקה בלחיצה על עצירה.",StopIteration:"האיטרטור נגמר ואין עוד פריטים."};
+const heName=t=>(D.b[t]||t).replace(/_/g," ");
+const translateErr=s=>s.replace(/\b[A-Z]\w*(Error|Exception|Interrupt|Exit)\b/g,m=>D.b[m]?heName(m)+" ("+m+")":m);
+function diagnosis(raw,line){
+  const last=raw.trim().split("\n").pop()||"",x=last.match(/^([A-Za-z_.]*(?:Error|Exception|KeyboardInterrupt|StopIteration))(?::\s*(.*))?$/);
+  if(!x)return"";
+  const type=x[1].split(".").pop(),detail=x[2]||"";let inst="";let help=errorGuide[type]||"התוכנית נעצרה בגלל חריגה בזמן הריצה.";
+  if(type==="ModuleNotFoundError"){const pkg=(detail.match(/'([^']+)'/)||[])[1];if(pkg)help+=` התקינו אותה בעזרת <code>python -m pip install ${esc(pkg)}</code>, או בדקו את שם הייבוא.`}
+  if(type==="ModuleNotFoundError"){const pkg=(detail.match(/'([^']+)'/)||[])[1];if(pkg)inst=pkg.split(".")[0]}
+  if(type==="NameError"){const n=(detail.match(/'([^']+)'/)||[])[1];if(n)help+=` השם שלא הוגדר: <code>${esc(n)}</code>.`}
+  const ib=inst&&window.PYIT_TOKEN?`<button class="btn sm primary" data-install="${esc(inst)}">התקן את ${esc(inst)} אוטומטית</button>`:"";
+  return`<div class="diag" dir="rtl"><strong><svg class="i"><use href="#i-alert"/></svg>הסבר פשוט: ${esc(heName(type))}</strong>${help}${detail?`<div style="margin-top:4px"><small>הודעת Python: <code>${esc(detail)}</code></small></div>`:""}${line||ib?`<div class="acts">${ib}${line?`<button class="btn sm" data-jump="${line}">עבור לשורה ${line}</button>`:""}</div>`:""}</div>`;
+}
+out.addEventListener("click",e=>{const ib=e.target.closest("[data-install]");if(ib){ib.disabled=true;installPkg(ib.dataset.install);return}const b=e.target.closest("[data-jump]");if(b){const l=+b.dataset.jump-1,ed=lastPane;ed.setCursor(Math.max(0,ed.get().split("\n").slice(0,l).join("\n").length+(l?1:0)),Math.max(0,ed.get().split("\n").slice(0,l).join("\n").length+(l?1:0)))}});
+let libraryState=null;
+async function refreshLibraries(){
+  const dot=$("#conn .dot"),txt=$("#connTxt");
+  if(!window.PYIT_TOKEN){dot.className="dot bad";txt.textContent="מצב עיון בלבד (ללא הרצה)";return}
+  try{libraryState=await api("/libraries");dot.className="dot ok";txt.textContent="Python "+libraryState.python}catch{dot.className="dot bad";txt.textContent="אין חיבור לשרת"}
+}
+function showLibraries(code){
+  if(!libraryState)return;
+  const names=Object.keys(libraryState.available).filter(n=>new RegExp(`(?:^|\\n)\\s*(?:import|from)\\s+${n}(?:\\s|\\.|$)`).test(code));
+  if(!names.length)return;
+  const d=document.createElement("div");d.className="libs";
+  d.innerHTML=`<span>ספריות בסביבת Python ${libraryState.python}:</span>`+names.map(n=>`<span class="badge ${libraryState.available[n]?"ok":"no"}">${n} · ${libraryState.available[n]?"זמינה":"לא מותקנת"}</span>`).join("");
+  out.append(d);
+}
+let tick=null;
+function setRunning(on,t0){
+  $("#btnRun").hidden=on;$("#btnStop").hidden=!on;$("#dfoot").hidden=!on||dtab==="files";
+  const c=$("#chip");c.className="chip"+(on?" run":"");
+  clearInterval(tick);
+  if(on){const f=()=>{const s=Math.floor((performance.now()-t0)/1000);$("#chipTxt").textContent=`רץ · ${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`};f();tick=setInterval(f,500)}
+}
+function setChip(cls,txt){$("#chip").className="chip "+cls;$("#chipTxt").textContent=txt}
+async function run(){
+  if(!window.PYIT_TOKEN){
+    revealDock();if(dtab!=="out")dockTab("out");resetOut();curLine=null;
+    out.insertAdjacentHTML("beforeend",`<div class="webnote" dir="rtl"><strong><svg class="i"><use href="#i-alert"/></svg>הדפדפן אינו תומך בהרצת Python</strong>באתר אפשר לכתוב ולתרגם קוד, אבל להרצה צריך Python אמיתי. להרצה מקומית לחצו על הכפתור, חלצו את הקובץ שהורד והריצו את <code>pythonit.py</code> (ב-Windows: לחיצה כפולה על <code>start.bat</code>).<div class="acts"><a class="btn sm primary" href="pythonit-desktop.zip" download="pythonit.zip">לחצו כאן להורדת התוכנה להרצה מקומית</a></div></div>`);
+    setChip("","מצב עיון בלבד");return;
+  }
+  AC.hide();
+  if(sess&&!sess.done){sess.cancel=true;api("/stop",{id:sess.id}).catch(()=>{})}
+  const code=en.get();
+  revealDock();if(dtab!=="out")dockTab("out");
+  if(S.clearOnRun||!out.children.length)resetOut();else{curLine=null;appendText("\n──────── הרצה חדשה ────────\n","sys")}
+  qIn=null;curLine=null;he.markErr(-1);en.markErr(-1);
+  const me=sess={id:null,since:0,queue:[],cancel:false,done:false,err:"",t0:performance.now()};
+  setRunning(true,me.t0);
+  try{await loadFiles();filesBefore=Object.fromEntries(FILES.files.map(f=>[f.p,f.t]))}catch{}
+  let r;try{r=await api("/start",{code,limit:S.limit})}catch{r={error:"לא ניתן להתחיל הרצה. בדקו שהאפליקציה עדיין פועלת (pythonit.py)."}}
+  if(r.error){appendText(r.error+"\n","e");me.done=true;setRunning(false);setChip("bad","שגיאה");refreshLibraries();return}
+  me.id=r.id;
+  for(const t of tok(code))if(t.t==="i"&&KNOWN.has(t.v))bump(t.v,1);saveHist();
+  poll(me,code);
+}
+async function poll(me,code){
+  while(!me.cancel){
+    let j;
+    try{j=await api(`/poll?id=${encodeURIComponent(me.id)}&since=${me.since}`)}
+    catch{if(me.cancel)return;appendText("\nהחיבור לשרת ההרצה אבד.\n","e");finish(me,{code:-1},code);return}
+    if(me.cancel)return;
+    const stick=nearEnd();me.since=j.n;
+    for(const ev of j.ev){
+      if(ev.k==="out")appendText(ev.d);
+      else if(ev.k==="err"){
+        if(/^\n\[.*\]\n$/s.test(ev.d)){me.sys=ev.d.trim();appendText(ev.d,"sys")}
+        else{me.err+=ev.d;appendText(translateErr(ev.d),"e")}
+      }
+      else if(ev.k==="img")addFigure(ev.d);
+      else if(ev.k==="input")requestInput();
+      else if(ev.k==="end")finish(me,ev,code);
+    }
+    if(stick)toEnd();
+    if(j.done){if(!me.done)finish(me,{code:-1},code);return}
+  }
+}
+function finish(me,ev,code){
+  if(me.done)return;me.done=true;
+  if(qIn){qIn.remove();qIn=null}
+  setRunning(false);
+  const sec=ev.sec!=null?ev.sec+" שניות":"";
+  if(me.install){
+    refreshLibraries();
+    if(ev.code===0){setChip("ok","ההתקנה הסתיימה");appendText(`\n✔ ${me.install} הותקנה. מריץ שוב…\n`,"sys");toast(`${me.install} הותקנה`);setTimeout(run,600)}
+    else{setChip("bad","ההתקנה נכשלה");appendText(`\nההתקנה נכשלה. אפשר לנסות ידנית בשורת הפקודה:\npython -m pip install ${me.install}\n`,"sys")}
+    toEnd();return;
+  }
+  const m=[...me.err.matchAll(/File "main\.py", line (\d+)/g)],line=m.length?+m[m.length-1][1]:0;
+  const g=me.err?diagnosis(me.err,line):"";
+  if(g){curLine=null;out.insertAdjacentHTML("beforeend",g);if(line){he.markErr(line-1);en.markErr(line-1)}}
+  if(!out.querySelector("div:not(.empty)")&&!out.querySelector(".figure"))appendText("(התוכנית הסתיימה ללא פלט)","sys");
+  showLibraries(code);
+  announceNewFiles();
+  if(me.sys&&!ev.code&&ev.code!==0)setChip("bad","הופסקה");
+  else if(ev.code===-1)setChip("bad","הופסקה"+(sec?" · "+sec:""));
+  else if(ev.code)setChip("bad",`שגיאה (קוד ${ev.code})${sec?" · "+sec:""}`);
+  else setChip("ok",`הסתיימה בהצלחה${sec?" · "+sec:""}`);
+  toEnd();
+}
+async function installPkg(mod){
+  if(sess&&!sess.done)return;
+  revealDock();curLine=null;qIn=null;
+  appendText(`\n──────── מתקין את ${mod} (נדרש חיבור לאינטרנט) ────────\n`,"sys");
+  const me=sess={id:null,since:0,queue:[],cancel:false,done:false,err:"",t0:performance.now(),install:mod};
+  setRunning(true,me.t0);$("#chipTxt").textContent="מתקין…";
+  let r;try{r=await api("/install",{name:mod})}catch{r={error:"לא ניתן להתחיל התקנה."}}
+  if(r.error){appendText(r.error+"\n","e");me.done=true;setRunning(false);setChip("bad","ההתקנה נכשלה");return}
+  me.id=r.id;poll(me,"");
+}
+async function stopRun(){const me=sess;if(!me||me.done)return;try{await api("/stop",{id:me.id})}catch{}}
+$("#btnRun").onclick=run;$("#btnStop").onclick=stopRun;
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();run()}});
+$("#oClear").onclick=()=>{if(sess&&!sess.done)return toast("אפשר לנקות אחרי שהתוכנית מסיימת");showEmpty();setChip("","מוכן")};
+$("#oCopy").onclick=()=>copyText(out.innerText.trim(),"הפלט הועתק");
+if(window.PYIT_TOKEN){const hb=()=>fetch("/ping",{headers:{"X-Token":window.PYIT_TOKEN},cache:"no-store"}).catch(()=>{});hb();setInterval(hb,4000)}
+
+/* ================= start ================= */
+applySettings();
+showEmpty();layoutDock();refreshLibraries();loadFiles();
+{const d=LS.g("pyit_d");d!=null&&d!==""?put(d):put(EX[0][1])}
+setTimeout(()=>{layoutDock();en.r();he.r()},50);
+
+</script>
+</body>
+</html>
